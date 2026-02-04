@@ -1,156 +1,203 @@
-.login-text {
-    /* Login your account */
-
-    position: absolute;
-    width: 386px;
-    height: 49px;
-    left: 123px;
-    top: 150px;
-
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 800;
-    font-size: 40.6066px;
-    line-height: 49px;
-
-    color: #8F1402;
-
-
+/* Reset and Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
+body {
+    font-family: 'Inter', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Main Container */
+.login-container {
+    height: 100vh;
+    width: 100%;
+}
+
+.row {
+    height: 100vh;
+    margin: 0;
+}
+
+/* Left Section */
+.left-section {
+    background-color: #FFFFFF;
+    height: 100%;
+    padding: 5vh 8vw;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Logo */
+.logo {
+    margin-bottom: 6vh;
+}
+
+.logo img {
+    width: clamp(200px, 20.625vw, 396px);
+    height: clamp(100px, 10.26vw, 197px);
+    margin: 0 auto;
+    margin-bottom: 4vh;
+    display: block;
+}
+
+/* Login Text */
+.login-text {
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: 700;
+    color: #8F1402;
+    margin-bottom: 4vh;
+}
+.col-lg-6 {
+    width: 50% !important;
+    flex: 0 0 50% !important;
+    max-width: 50% !important;
+    padding: 0 !important;
+}
+
+/* Form Elements */
 .login-form {
-    /* Username or Email */
+    width: 100%;
+    max-width: 28vw;
+    min-width: 280px;
+}
 
-    position: absolute;
-    width: 260px;
-    height: 40px;
-    left: 86px;
-    top: 250px;
-
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 200;
-    font-size: 30px;
-    line-height: 40px;
-    /* identical to box height, or 133% */
-
-    color: #000000;
-
-
-
-
+.form-label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #333333;
+    margin-bottom: 0.4rem;
+    display: block;
 }
 
 .form-control {
-    font-weight: bold;
+    width: 100%;
+    border: 1px solid #D1D1D1;
+    border-radius: 25px;
+    padding: 0.75rem 1.2rem;
+    font-size: 0.9rem;
+    background-color: #F5F5F5;
+    margin-bottom: 1.2rem;
+}
 
+.form-control:focus {
+    outline: none;
+    border-color: #8F1402;
+    background-color: #FFFFFF;
+}
 
-    opacity: 0.7;
+/* Forgot Password and Login Button Row */
+.row.g-0 {
+    margin-bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: auto !important;
+    max-height: 50px;
+}
 
+.col-lg-11,
+.col-lg-1 {
+    padding: 0 !important;
+    margin: 0 !important;
+}
 
-    box-sizing: border-box;
+.col-lg-11 {
+    flex: 0 0 auto;
+    width: auto !important;
+}
 
-
-    width: 504px;
-    height: 79px;
-
-
-    background: rgba(217, 217, 217, 0.5);
-    border: 1px solid rgba(0, 0, 0, 0.7);
-    border-radius: 50px;
-
+.col-lg-1 {
+    flex: 0 0 auto;
+    width: auto !important;
 }
 
 .forgot-password-link {
-    /* Forgot password? */
+    font-size: 0.8rem;
+    color: #666666;
+    text-decoration: none;
+}
 
-   
-    width: 205px;
-    height: 40px;
+.forgot-password-link:hover {
+    color: #8F1402;
+    text-decoration: underline;
+}
+
+.login-button {
+    background-color: #8F1402;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 20px;
+    padding: 0.65rem 2.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.login-button:hover {
+    background-color: #6B0F01;
+}
+
+/* Register Section */
+.register {
+    margin-top: 1rem;
+}
+
+.register p {
+    font-size: 0.85rem;
+    color: #333333;
+    margin: 0;
+}
+
+.register-link {
+    color: #8F1402;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.register-link:hover {
+    text-decoration: underline;
+}
+
+/* Right Section */
+.right-section {
+    background-image: url('../images/auditoo.png');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 5vh 5vw;
+}
+
+.right-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
+
+.text {
+
+  color: white;
+    font-size: 42px;
+    font-weight: 300;
+    text-align: center;
+    letter-spacing: 2px;
+    line-height: 1.4;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
     
-
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 200;
-    font-size: 25px;
-    line-height: 40px;
-    /* identical to box height, or 160% */
-
-    color: #000000;
-
-
-}
-.login-button{
-
-width: 204px;
-height: 67px;
-
-background: #8F1402;
-border-radius: 50px;
-
-
-font-family: 'Inter';
-font-style: normal;
-font-weight: 300;
-font-size: 30px;
-line-height: 36px;
-
-color: #FFFFFF;
-
-
-
-
-
 }
 
-.register{
-    /* Don’t have an account? Register now */
+/* WHERE TODAY’S IDEAS TURN INTO TOMORROW’S REALITY */
 
-
-width: 428px;
-height: 40px;
-
-
-font-family: 'Inter';
-font-style: normal;
-font-weight: 200;
-font-size: 25px;
-line-height: 40px;
-/* identical to box height, or 160% */
-
-
-
-
-}
-.register-link{
-    color :#8F1402;
-}
-.right-section{
-    /* WHERE TODAY’S IDEAS TURN INTO TOMORROW’S REALITY */
-
-position: absolute;
-width: 708px;
-height: 122px;
-left: calc(50% - 708px/2 + 312px);
-top: 160px;
-
-font-family: 'Inter';
-font-style: normal;
-font-weight: 200;
-font-size: 50px;
-line-height: 61px;
-text-align: center;
-
-color: #FFFFFF;
-background-color: #8F1402;
-/* Rectangle 1 */
-
-position: absolute;
-width: 817px;
-height: 1106px;
-left: 623px;
-
-
-background: linear-gradient(180deg, #000000 0%, rgba(115, 115, 115, 0) 100%);
-
-}
