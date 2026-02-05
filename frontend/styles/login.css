@@ -164,7 +164,7 @@ body {
 
 /* Right Section */
 .right-section {
-    background-image: url('../images/auditoo.png');
+    background-image: url('../assets/img/insatshadow.png');
     background-size: cover;
     background-position: center;
     height: 100vh;

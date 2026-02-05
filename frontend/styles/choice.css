@@ -1,0 +1,53 @@
+@font-face {
+  font-family: 'Inter Regular';
+  src: url(/frontend/assets/fonts/Inter&poppins/Inter/static/Inter_18pt-Regular.ttf);
+}
+@font-face {
+  font-family: 'Inter Medium';
+  src: url(/frontend/assets/fonts/Inter&poppins/Inter/static/Inter_18pt-Medium.ttf);
+}
+@font-face {
+  font-family: 'Inter ExtraLight';
+  src: url(/frontend/assets/fonts/Inter&poppins/Inter/static/Inter_18pt-ExtraLight.ttf);
+}
+@font-face {
+  font-family: 'Inter ExtraBold';
+  src: url(/frontend/assets/fonts/Inter&poppins/Inter/static/Inter_18pt-ExtraBold.ttf);
+}
+.login-txt{
+    font-family: 'Inter ExtraLight';
+}
+.choice-btn{
+  background-color: white;
+  border-color: #8F1402;
+  border-radius: 20px;
+  border-width: 3px;
+  font-size: 40.61px;
+  font-family: 'Inter ExtraBold';
+  color: black;
+  box-shadow: -5px 5px 15px 6px rgb(205, 202, 202);
+}
+.choice-btn:hover{
+  background-color: white;
+  color: #8F1402;
+  border-color: #8F1402;
+}
+.login-now{
+  color: #8F1402;
+  margin-right: 112px;
+  border-radius: 50px;
+}
+.login-now:hover{
+  cursor: pointer;
+}
+.al{
+  font-family: 'Inter ExtraLight';
+  font-size: 25px;
+  translate: -90px 20px;
+}
+.bi{
+  background-image: url(/frontend/assets/img/insatshadow.png);
+  background-repeat: no-repeat;
+  background-position: 900px 0px;
+  background-size: 49%;
+}
