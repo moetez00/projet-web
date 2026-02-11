@@ -14,8 +14,65 @@
   font-family: 'Inter ExtraBold';
   src: url(/frontend/assets/fonts/Inter&poppins/Inter/static/Inter_18pt-ExtraBold.ttf);
 }
-.login-txt{
+
+
+.right-section {
+    background-image: url('../assets/img/insatshadow.png');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 5vh 5vw;
+}
+
+.right-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
+.quote{
+  font-size: 45px;
+  font-family: Inter ExtraLight;
+  color: white;
+  text-align: center;
+}
+.login-ref{
     font-family: 'Inter ExtraLight';
+    font-size: 30px;
+    color:black;
+    display: flex;
+    position: relative;
+    padding: 1.5vh 1.5vw;
+}
+.login-ref:hover{
+    color: black;
+}
+
+.logo{
+  background-image: url("/frontend/assets/img/logo.png");
+  background-position: center;
+  background-size: 45%;
+  background-repeat: no-repeat;
+}
+.logo-container{
+  height:35vh;
+  margin-top: -5%;
+}
+.create-account{
+  text-align: center;
+  color: #8F1402;
+  font-size: 40.61px;
+  font-family: 'Inter ExtraBold';
+  margin-top: -7%;
+  margin-bottom: 5%;
 }
 .choice-btn{
   background-color: white;
@@ -34,7 +91,6 @@
 }
 .login-now{
   color: #8F1402;
-  margin-right: 112px;
   border-radius: 50px;
 }
 .login-now:hover{
@@ -43,11 +99,25 @@
 .al{
   font-family: 'Inter ExtraLight';
   font-size: 25px;
-  translate: -90px 20px;
+  text-wrap: nowrap;
+  text-align: center;
 }
-.bi{
-  background-image: url(/frontend/assets/img/insatshadow.png);
-  background-repeat: no-repeat;
-  background-position: 900px 0px;
-  background-size: 49%;
+
+.txt2{
+  margin-top: 5%;
+}
+
+@media only screen and (max-width:990px){
+  .right-section{
+    display: none;
+  }
+}
+
+@media only screen and (max-width:576px){
+  .al{
+    text-wrap: wrap;
+  }
+  .logo{
+      background-size: 70%;
+  }
 }
