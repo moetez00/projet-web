@@ -4,3 +4,4 @@
 ```bash 
 composer install
 ```
+3- Make a copy of `.env.example` and rename it to `.env` and put your connection details
