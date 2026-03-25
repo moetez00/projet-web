@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INSAT PULSE - Home</title>
+    <link rel="stylesheet" href="/frontend/styles/home.css">
+    <link rel="stylesheet" href="/frontend/styles/home_registered.css">
+    <link rel="icon" type="image/x-icon" href="/frontend/assets/img/logo.png">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar-home">
+        <div class="navbar-logo">
+            <img src="/frontend/assets/img/logo.png" alt="INSAT PULSE">
+        </div>
+
+        <!-- icônes home + calendar -->
+        <div class="nav-icons">
+            <button class="nav-icon-btn active" title="Home">
+                <img src="/frontend/assets/img/icon-home.png" alt="Home">
+            </button>
+            <button class="nav-icon-btn" title="Calendar">
+                <img src="/frontend/assets/img/icon-calender.png" alt="Calendar">
+            </button>
+        </div>
+
+        <div class="navbar-search">
+            <svg class="search-icon" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input type="text" placeholder="Search clubs, events…">
+        </div>
+
+        <div class="navbar-user">
+            <span class="user-name">Foulen Ben Foulen</span>
+            <img class="user-avatar" src="/frontend/assets/img/avatar-placeholder.png" alt="Profile photo">
+        </div>
+    </nav>
+
+    <!-- PAGE -->
+    <div class="home-layout">
+
+        <!-- FEED -->
+        <main class="feed"></main>
+
+        <!-- RIGHT SIDEBAR -->
+        <aside class="sidebar">
+
+            <!-- Calendar -->
+            <div class="sidebar-card">
+                <div class="cal-header">
+                    <span class="cal-month">Feb 2026</span>
+                    <div class="cal-nav">
+                        <button>&lt;</button>
+                        <button>&gt;</button>
+                    </div>
+                </div>
+                <div class="cal-grid">
+                    <div class="cal-day-name">Mon</div>
+                    <div class="cal-day-name">Tue</div>
+                    <div class="cal-day-name">Wed</div>
+                    <div class="cal-day-name">Thu</div>
+                    <div class="cal-day-name">Fri</div>
+                    <div class="cal-day-name">Sat</div>
+                    <div class="cal-day-name">Sun</div>
+                    <!-- Feb 2026 starts on Sunday -->
+                    <div class="cal-day"></div>
+                    <div class="cal-day"></div>
+                    <div class="cal-day"></div>
+                    <div class="cal-day"></div>
+                    <div class="cal-day"></div>
+                    <div class="cal-day has-event">1</div>
+                    <div class="cal-day">2</div>
+                    <div class="cal-day">3</div>
+                    <div class="cal-day today has-event">4</div>
+                    <div class="cal-day has-event">5</div>
+                    <div class="cal-day">6</div>
+                    <div class="cal-day">7</div>
+                    <div class="cal-day">8</div>
+                    <div class="cal-day">9</div>
+                    <div class="cal-day has-event">10</div>
+                    <div class="cal-day">11</div>
+                    <div class="cal-day">12</div>
+                    <div class="cal-day">13</div>
+                    <div class="cal-day">14</div>
+                    <div class="cal-day">15</div>
+                    <div class="cal-day">16</div>
+                    <div class="cal-day">17</div>
+                    <div class="cal-day">18</div>
+                    <div class="cal-day">19</div>
+                    <div class="cal-day">20</div>
+                    <div class="cal-day">21</div>
+                    <div class="cal-day">22</div>
+                    <div class="cal-day">23</div>
+                    <div class="cal-day">24</div>
+                    <div class="cal-day">25</div>
+                    <div class="cal-day">26</div>
+                    <div class="cal-day">27</div>
+                    <div class="cal-day">28</div>
+                </div>
+            </div>
+
+            <!-- Upcoming Schedule -->
+            <div class="sidebar-card">
+                <div class="schedule-title">Upcoming Schedule</div>
+                <div class="schedule-list">
+
+                    <div class="sched-row">
+                        <div class="sched-date">
+                            <div class="sched-day-name">Tue</div>
+                            <div class="sched-day-num">04</div>
+                        </div>
+                        <div class="sched-events">
+                            <div>
+                                <div class="sched-event-time">10:00 AM</div>
+                                <div class="sched-event-name">Formation PCB – IEEE</div>
+                            </div>
+                            <div>
+                                <div class="sched-event-time">3:00 PM</div>
+                                <div class="sched-event-name">Workshop ACM</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="schedule-divider"></div>
+
+                    <div class="sched-row">
+                        <div class="sched-date">
+                            <div class="sched-day-name">Sat</div>
+                            <div class="sched-day-num">08</div>
+                        </div>
+                        <div class="sched-events">
+                            <div>
+                                <div class="sched-event-time">8:00 AM</div>
+                                <div class="sched-event-name">Nvidia Workshop – ACM & IEEE C…</div>
+                            </div>
+                            <div>
+                                <div class="sched-event-time">4:00 PM</div>
+                                <div class="sched-event-name">Workshop Computer Vision – ACM</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <button class="check-cal-btn">Check Calendar</button>
+            </div>
+
+        </aside>
+    </div>
+
+</body>
+</html>

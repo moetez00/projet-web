@@ -1,0 +1,75 @@
+@import url('/frontend/styles/home.css');
+
+/* ── NAVBAR USER (registered) ── */
+.navbar-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-name {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #000;
+    white-space: nowrap;
+}
+
+.user-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #8F1402;
+}
+
+/* ── SCHEDULE (sched-* styles) ── */
+.sched-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 32px;
+}
+
+.sched-day-name {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.65rem;
+    color: rgba(0, 0, 0, 0.4);
+    text-transform: uppercase;
+}
+
+.sched-day-num {
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: #8F1402;
+    line-height: 1.1;
+}
+
+.sched-events {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+}
+
+.sched-event-time {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 0.7rem;
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.sched-event-name {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.78rem;
+    color: #000;
+}
+
+.schedule-divider {
+    height: 1px;
+    background-color: rgba(0, 0, 0, 0.08);
+    margin: 2px 0;
+}
