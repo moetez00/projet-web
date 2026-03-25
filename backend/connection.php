@@ -1,17 +1,24 @@
 <?php
+// On charge l'autoloader de Composer (le dossier que tu viens de créer)
+require_once __DIR__ . '/../vendor/autoload.php';
 
-require_once realpath(__DIR__ . "/vendor/autoload.php");
-
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+// On utilise Dotenv pour lire ton fichier .env
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
 $dotenv->load();
-$dotenv->required(['DB_HOST', 'DB_NAME', 'DB_USERNAME', 'DB_PASSWORD']);
 
-$servername =$_ENV['DB_HOST'];
-$dbnae=$_ENV['DB_NAME'];
-$username = $_ENV['DB_USERNAME'];
-$password = $_ENV['DB_PASSWORD'];
+// On récupère les accès depuis le fichier .env
+$host = $_ENV['DB_HOST'];
+$db   = $_ENV['DB_NAME'];
+$user = $_ENV['DB_USER'];
+$pass = $_ENV['DB_PASS'];
 
-$connection = new mysqli($servername, $username,$password,$dbname);
-if ($connection->connect_error) { die("connection error : " . $connection->connect_error);}
-?>
-
+try {
+    // Connexion PDO standard
+    $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+    // Si tu veux vérifier que ça marche, tu peux décommenter la ligne suivante :
+    // echo "Connexion réussie avec la méthode Dotenv !";
+} catch (PDOException $e) {
+    die("Erreur de connexion : " . $e->getMessage());
+}

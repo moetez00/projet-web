@@ -20,14 +20,14 @@ CREATE TABLE Student(
     fullName VARCHAR(30),
     FOREIGN KEY (id) REFERENCES User(id)
 );
-CREATE TABLE Follow(
-    id_Student INT PRIMARY KEY,
-    id_Club INT PRIMARY KEY,
+CREATE TABLE Follow (
+    id_Student INT,
+    id_Club INT,
     dateFollow Date,
-    FOREIGN KEY(id_Student) REFERENCES Student(id),
-    FOREIGN KEY(id_Club) REFERENCES Club(id)
+    CONSTRAINT pk_follow PRIMARY KEY (id_Student, id_Club),
+    FOREIGN KEY (id_Student) REFERENCES Student(id),
+    FOREIGN KEY (id_Club) REFERENCES Club(id)
 );
-
 CREATE TABLE EVENT(
     id INT PRIMARY KEY auto_increment,
     id_Club INT,
@@ -40,11 +40,11 @@ CREATE TABLE EVENT(
     FOREIGN KEY(id_Club) REFERENCES Club(id)
 );
 
-CREATE TABLE LIKE(
-    id_Student INT PRIMARY KEY,
-    id_Club INT PRIMARY KEY,
+CREATE TABLE `LIKE`(
+    id_Student INT ,
+    id_Club INT ,
+    constraint pk_like PRIMARY KEY(id_Student,id_Club),
     dateLike Date,
     FOREIGN KEY(id_Student) REFERENCES Student(id),
     FOREIGN KEY(id_Club) REFERENCES Club(id)
-
 );
