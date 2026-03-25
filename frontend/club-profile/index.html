@@ -93,91 +93,22 @@
       <div class="col-12 col-md-8 col-lg-9">
         <div class="content-card">
 
-          <!-- My Posts Form panel -->
+          <!-- My Posts feed panel -->
           <div id="panel-myposts">
-            <form method="POST" enctype="multipart/form-data">
-              <div class="row g-3">
 
-                <!-- Category -->
-                <div class="col-12 col-sm-6">
-                  <label class="form-label">
-                    <i class="bi bi-flag"></i> Category
-                  </label>
-                  <select class="form-select" name="category">
-                    <option selected>Event</option>
-                    <option>Workshop</option>
-                    <option>Competition</option>
-                    <option>Announcement</option>
-                    <option>Other</option>
-                  </select>
-                </div>
+            <!-- Top action buttons -->
+            <div class="posts-actions">
+              <button class="btn-action" data-bs-toggle="modal" data-bs-target="#addPostModal">
+                <i class="bi bi-plus"></i> Add post
+              </button>
+              <button class="btn-action" type="button">
+                <i class="bi bi-bell"></i> Collaboration requests
+              </button>
+            </div>
 
-                <!-- Content -->
-                <div class="col-12 col-sm-6">
-                  <label class="form-label">
-                    <i class="bi bi-pencil"></i> Content
-                  </label>
-                  <input type="text" class="form-control" name="content" placeholder="" />
-                </div>
+            <!-- Posts feed (empty) -->
+            <div id="posts-feed"></div>
 
-                <!-- Place -->
-                <div class="col-12 col-sm-6">
-                  <label class="form-label">
-                    <i class="bi bi-geo-alt"></i> Place
-                  </label>
-                  <input type="text" class="form-control" name="place" placeholder="" />
-                </div>
-
-                <!-- Date -->
-                <div class="col-12 col-sm-6">
-                  <label class="form-label">
-                    <i class="bi bi-clock"></i> Date
-                  </label>
-                  <input type="date" class="form-control" name="date" />
-                </div>
-
-                <!-- Caption -->
-                <div class="col-12">
-                  <label class="form-label">
-                    Caption
-                  </label>
-                  <textarea class="form-control" name="caption" rows="4" placeholder=""></textarea>
-                </div>
-
-                <!-- Photo -->
-                <div class="col-12 col-sm-6">
-                  <label class="form-label">
-                    Photo
-                  </label>
-                  <label class="photo-upload-label" for="photoInput">
-                    <i class="bi bi-camera"></i>
-                    <span>Add/ preview photo</span>
-                  </label>
-                  <input type="file" id="photoInput" name="photo" accept="image/*" />
-                </div>
-
-                <!-- In collaboration with -->
-                <div class="col-12 col-sm-6">
-                  <label class="form-label">
-                    In collaboration with
-                  </label>
-                  <select class="form-select" name="collaboration">
-                    <option selected>None</option>
-                    <option>IEEE INSAT</option>
-                    <option>GDSC INSAT</option>
-                    <option>Enactus INSAT</option>
-                    <option>Other</option>
-                  </select>
-                </div>
-
-                <!-- Action buttons -->
-                <div class="col-12 d-flex justify-content-end gap-3 mt-2">
-                  <button type="button" class="btn-cancel" onclick="document.querySelector('form').reset()">Cancel</button>
-                  <button type="submit" class="btn-maroon">Post</button>
-                </div>
-
-              </div>
-            </form>
           </div>
 
           <!-- Calendar blank panel -->
@@ -198,23 +129,103 @@
     </div>
   </div>
 
+  <!-- ══════════ ADD POST MODAL ══════════ -->
+  <div class="modal fade" id="addPostModal" tabindex="-1" aria-labelledby="addPostModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content" style="border-radius:18px; border:none;">
+        <div class="modal-header" style="border-bottom:1px solid #f0f0f0; padding:1.2rem 1.6rem;">
+          <h5 class="modal-title" id="addPostModalLabel" style="font-weight:700; font-size:1rem;">New Post</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="padding:1.6rem;">
+          <form id="addPostForm" method="POST" enctype="multipart/form-data">
+            <div class="row g-3">
+
+              <!-- Category -->
+              <div class="col-12 col-sm-6">
+                <label class="form-label"><i class="bi bi-flag"></i> Category</label>
+                <select class="form-select" name="category">
+                  <option selected>Event</option>
+                  <option>Workshop</option>
+                  <option>Competition</option>
+                  <option>Announcement</option>
+                  <option>Other</option>
+                </select>
+              </div>
+
+              <!-- Content -->
+              <div class="col-12 col-sm-6">
+                <label class="form-label"><i class="bi bi-pencil"></i> Content</label>
+                <input type="text" class="form-control" name="content" />
+              </div>
+
+              <!-- Place -->
+              <div class="col-12 col-sm-6">
+                <label class="form-label"><i class="bi bi-geo-alt"></i> Place</label>
+                <input type="text" class="form-control" name="place" />
+              </div>
+
+              <!-- Date -->
+              <div class="col-12 col-sm-6">
+                <label class="form-label"><i class="bi bi-clock"></i> Date</label>
+                <input type="date" class="form-control" name="date" />
+              </div>
+
+              <!-- Caption -->
+              <div class="col-12">
+                <label class="form-label">Caption</label>
+                <textarea class="form-control" name="caption" rows="4"></textarea>
+              </div>
+
+              <!-- Photo -->
+              <div class="col-12 col-sm-6">
+                <label class="form-label">Photo</label>
+                <label class="photo-upload-label" for="photoInput">
+                  <i class="bi bi-camera"></i>
+                  <span>Add/ preview photo</span>
+                </label>
+                <input type="file" id="photoInput" name="photo" accept="image/*" />
+              </div>
+
+              <!-- In collaboration with -->
+              <div class="col-12 col-sm-6">
+                <label class="form-label">In collaboration with</label>
+                <select class="form-select" name="collaboration">
+                  <option selected>None</option>
+                  <option>IEEE INSAT</option>
+                  <option>GDSC INSAT</option>
+                  <option>Enactus INSAT</option>
+                  <option>Other</option>
+                </select>
+              </div>
+
+              <!-- Action buttons -->
+              <div class="col-12 d-flex justify-content-end gap-3 mt-2">
+                <button type="button" class="btn-cancel" data-bs-dismiss="modal"
+                  onclick="document.getElementById('addPostForm').reset()">Cancel</button>
+                <button type="submit" class="btn-maroon">Post</button>
+              </div>
+
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Bootstrap 5 JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
     function switchPanel(btn) {
-      // Toggle active button state
       document.querySelectorAll('.sidebar-nav .nav-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
 
-      // Hide all panels
       ['myposts', 'calendar', 'profile'].forEach(id => {
         document.getElementById('panel-' + id).classList.add('d-none');
       });
 
-      // Show the target panel
-      const target = btn.dataset.panel;
-      document.getElementById('panel-' + target).classList.remove('d-none');
+      document.getElementById('panel-' + btn.dataset.panel).classList.remove('d-none');
     }
   </script>
 
