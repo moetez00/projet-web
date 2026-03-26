@@ -1,16 +1,24 @@
 <?php
 session_start();
-// Vérifie si le club est connecté
 #if (!isset($_SESSION['club_id'])) {
     #header("Location: login.php"); 
     #exit(); // On arrête l'exécution du script ici
 #}
 require_once "connection.php"; 
 
-// On utilise l'ID de session, ou 1 (AeRobotix) pour tes tests
+// 1. On récupère l'ID (depuis la session ou 1 par défaut)
 $club_id = $_SESSION['club_id'] ?? 1; 
-$query = "SELECT * FROM EVENT WHERE id_Club = $club_id ORDER BY id DESC";
-$result = $connection->query($query);
+
+// 2. PROTECTION ANTI-INJECTION : Requête préparée pour le COUNT
+$sql_count = "SELECT COUNT(*) as total FROM EVENT WHERE id_Club = ?";
+$stmt_count = $connection->prepare($sql_count);
+$stmt_count->bind_param("i", $club_id);
+$stmt_count->execute();
+$res_count = $stmt_count->get_result();
+$row_count = $res_count->fetch_assoc();
+$post_count = $row_count['total'];
+
+$stmt_count->close();
 ?>
 
 <!DOCTYPE html>
@@ -18,8 +26,7 @@ $result = $connection->query($query);
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>INSAT Pulse – AeRobotix INSAT</title>
-
+  <title>INSAT Pulse – Publish Event</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="../frontend/club-profile/style.css" />
@@ -31,17 +38,14 @@ $result = $connection->query($query);
       <i class="bi bi-activity pulse-icon"></i>
       <span class="brand-text">INSAT<span>-PULSE</span></span>
     </a>
-
     <div class="nav-icons ms-3">
       <a href="#" title="Home"><i class="bi bi-house-door"></i></a>
       <a href="#" title="Calendar"><i class="bi bi-calendar3"></i></a>
     </div>
-
     <div class="search-wrap ms-3">
       <i class="bi bi-search"></i>
       <input type="text" placeholder="Search…" />
     </div>
-
     <div class="user-badge">
       <div class="user-info">
         <div class="name">AeRobotix INSAT</div>
@@ -70,7 +74,7 @@ $result = $connection->query($query);
               <div class="stat-lbl">Followers</div>
             </div>
             <div class="stat-item">
-              <div class="stat-num"><?php echo $result ? $result->num_rows : 0; ?></div>
+              <div class="stat-num"><?php echo (int)$post_count; ?></div>
               <div class="stat-lbl">Posts</div>
             </div>
           </div>
@@ -93,48 +97,46 @@ $result = $connection->query($query);
 
       <div class="col-12 col-md-8 col-lg-9">
         <div class="content-card">
+
           <div id="panel-myposts">
             <div class="posts-actions">
               <button class="btn-action" data-bs-toggle="modal" data-bs-target="#addPostModal">
                 <i class="bi bi-plus"></i> Add post
               </button>
+              <button class="btn-action" type="button">
+                <i class="bi bi-bell"></i> Collaboration requests
+              </button>
             </div>
 
             <div id="posts-feed" class="mt-4">
-              <?php if ($result && $result->num_rows > 0): ?>
-                <?php while($row = $result->fetch_assoc()): ?>
-                  
-                  <div class="post-item mb-4 p-3 border rounded shadow-sm bg-white">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                      <span class="badge bg-danger">Event</span>
-                      <small class="text-muted">From: <?php echo $row['startDate']; ?></small>
-                    </div>
-                    
-                    <h5 class="fw-bold"><?php echo htmlspecialchars($row['title']); ?></h5>
-                    <p class="text-secondary"><?php echo nl2br(htmlspecialchars($row['description'])); ?></p>
-
-                    <?php if (!empty($row['imageURL'])): ?>
-                      <div class="post-img-container mb-3">
-                        <img src="../uploads/<?php echo htmlspecialchars($row['imageURL']); ?>" class="img-fluid rounded" alt="Post image" style="max-height: 400px; width: 100%; object-fit: cover;">
-                      </div>
-                    <?php endif; ?>
-
-                    <div class="d-flex justify-content-between align-items-center border-top pt-2">
-                      <span class="small text-muted"><i class="bi bi-geo-alt"></i> <?php echo htmlspecialchars($row['loc']); ?></span>
-                      <button class="btn btn-sm btn-outline-danger">
-                        <i class="bi bi-heart"></i> Like
-                      </button>
-                    </div>
-                  </div>
-
-                <?php endwhile; ?>
-              <?php else: ?>
-                <p class="text-center text-muted py-5">Aucun événement publié pour le moment.</p>
+              <?php if (isset($_GET['success'])): ?>
+                <div class="alert alert-success d-flex align-items-center mb-4" role="alert" style="border-radius: 12px; background-color: #d4edda; border-color: #c3e6cb; color: #155724;">
+                  <i class="bi bi-check-circle-fill me-2"></i>
+                  <div>Your event has been successfully published!</div>
+                </div>
               <?php endif; ?>
+
+              <div class="text-center py-5 border rounded bg-light" style="border-style: dashed !important; border-width: 2px;">
+                <i class="bi bi-megaphone fs-1 text-secondary"></i>
+                <h4 class="mt-3 text-dark">Management Dashboard</h4>
+                <p class="text-secondary">Click the <b>"Add post"</b> button to create a new event.</p>
+              </div>
             </div>
           </div>
+
+          <div id="panel-calendar" class="d-none blank-panel text-center py-5">
+            <i class="bi bi-calendar3 text-secondary d-block fs-1 mb-2"></i>
+            <span class="text-secondary">My Calendar — coming soon</span>
+          </div>
+
+          <div id="panel-profile" class="d-none blank-panel text-center py-5">
+            <i class="bi bi-person-circle text-secondary d-block fs-1 mb-2"></i>
+            <span class="text-secondary">Profile — coming soon</span>
+          </div>
+
         </div>
       </div>
+
     </div>
   </div>
 
@@ -148,33 +150,15 @@ $result = $connection->query($query);
         <div class="modal-body">
           <form action="create_event.php" method="POST" enctype="multipart/form-data">
             <div class="row g-3">
-              <div class="col-12">
-                <label class="form-label">Title</label>
-                <input type="text" class="form-control" name="title" required />
-              </div>
-              <div class="col-12 col-sm-6">
-                <label class="form-label">Location (loc)</label>
-                <input type="text" class="form-control" name="loc" />
-              </div>
-              <div class="col-12 col-sm-3">
-                <label class="form-label">Start Date</label>
-                <input type="date" class="form-control" name="startDate" />
-              </div>
-              <div class="col-12 col-sm-3">
-                <label class="form-label">End Date</label>
-                <input type="date" class="form-control" name="endDate" />
-              </div>
-              <div class="col-12">
-                <label class="form-label">Description</label>
-                <textarea class="form-control" name="description" rows="4"></textarea>
-              </div>
-              <div class="col-12">
-                <label class="form-label">Photo (imageURL)</label>
-                <input type="file" class="form-control" name="photo" accept="image/*" />
-              </div>
+              <div class="col-12"><label class="form-label">Title</label><input type="text" class="form-control" name="title" required /></div>
+              <div class="col-12 col-sm-6"><label class="form-label">Place</label><input type="text" class="form-control" name="loc" /></div>
+              <div class="col-12 col-sm-3"><label class="form-label">Start Date</label><input type="date" class="form-control" name="startDate" /></div>
+              <div class="col-12 col-sm-3"><label class="form-label">End Date</label><input type="date" class="form-control" name="endDate" /></div>
+              <div class="col-12"><label class="form-label">Description</label><textarea class="form-control" name="description" rows="4"></textarea></div>
+              <div class="col-12"><label class="form-label">Photo</label><input type="file" class="form-control" name="photo" accept="image/*" /></div>
               <div class="col-12 d-flex justify-content-end gap-3 mt-2">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-danger">Post</button>
+                <button type="submit" class="btn-maroon" style="background-color: #8B0000; color: white; border:none; padding: 8px 20px; border-radius: 8px;">Post</button>
               </div>
             </div>
           </form>
@@ -189,12 +173,11 @@ $result = $connection->query($query);
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       ['myposts', 'calendar', 'profile'].forEach(id => {
-        document.getElementById('panel-' + id)?.classList.add('d-none');
+        document.getElementById('panel-' + id).classList.add('d-none');
       });
-      document.getElementById('panel-' + btn.dataset.panel)?.classList.remove('d-none');
+      document.getElementById('panel-' + btn.dataset.panel).classList.remove('d-none');
     }
   </script>
 </body>
 </html>
-
 
