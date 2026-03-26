@@ -21,11 +21,12 @@ CREATE TABLE Student(
     FOREIGN KEY (id) REFERENCES User(id)
 );
 CREATE TABLE Follow(
-    id_Student INT PRIMARY KEY,
-    id_Club INT PRIMARY KEY,
+    id_Student INT ,
+    id_Club INT,
     dateFollow Date,
     FOREIGN KEY(id_Student) REFERENCES Student(id),
-    FOREIGN KEY(id_Club) REFERENCES Club(id)
+    FOREIGN KEY(id_Club) REFERENCES Club(id),
+    primary key(id_Student,id_Club)
 );
 
 CREATE TABLE EVENT(
@@ -41,10 +42,10 @@ CREATE TABLE EVENT(
 );
 
 CREATE TABLE LIKES(
-    id_Student INT PRIMARY KEY,
-    id_Club INT PRIMARY KEY,
+    id_Student INT ,
+    id_Club INT ,
     dateLike Date,
     FOREIGN KEY(id_Student) REFERENCES Student(id),
-    FOREIGN KEY(id_Club) REFERENCES Club(id)
-
+    FOREIGN KEY(id_Club) REFERENCES Club(id),
+	primary key(id_Student,id_Club)
 );
