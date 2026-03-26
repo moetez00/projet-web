@@ -1,13 +1,18 @@
 <?php
-
-#session_start(); 
+session_start();
+// Vérifie si le club est connecté
 #if (!isset($_SESSION['club_id'])) {
- #   header("Location: login.php"); 
-  #  exit();
+    #header("Location: login.php"); 
+    #exit(); // On arrête l'exécution du script ici
 #}
-
 require_once "connection.php"; 
+
+// On utilise l'ID de session, ou 1 (AeRobotix) pour tes tests
+$club_id = $_SESSION['club_id'] ?? 1; 
+$query = "SELECT * FROM EVENT WHERE id_Club = $club_id ORDER BY id DESC";
+$result = $connection->query($query);
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,11 +58,9 @@ require_once "connection.php";
 
       <div class="col-12 col-md-4 col-lg-3">
         <div class="sidebar-card">
-
           <div class="club-avatar">
             <img src="https://placehold.co/110x110/fce8e8/8B0000?text=AeRobotix" alt="AeRobotix INSAT logo" />
           </div>
-
           <div class="club-name">AeRobotix INSAT</div>
           <div class="club-handle">aerobotix</div>
 
@@ -67,7 +70,7 @@ require_once "connection.php";
               <div class="stat-lbl">Followers</div>
             </div>
             <div class="stat-item">
-              <div class="stat-num">50</div>
+              <div class="stat-num"><?php echo $result ? $result->num_rows : 0; ?></div>
               <div class="stat-lbl">Posts</div>
             </div>
           </div>
@@ -85,112 +88,94 @@ require_once "connection.php";
               <i class="bi bi-pencil-square"></i> My posts
             </button>
           </div>
-
         </div>
       </div>
 
       <div class="col-12 col-md-8 col-lg-9">
         <div class="content-card">
-
           <div id="panel-myposts">
-
             <div class="posts-actions">
               <button class="btn-action" data-bs-toggle="modal" data-bs-target="#addPostModal">
                 <i class="bi bi-plus"></i> Add post
               </button>
-              <button class="btn-action" type="button">
-                <i class="bi bi-bell"></i> Collaboration requests
-              </button>
             </div>
 
-            <div id="posts-feed"></div>
+            <div id="posts-feed" class="mt-4">
+              <?php if ($result && $result->num_rows > 0): ?>
+                <?php while($row = $result->fetch_assoc()): ?>
+                  
+                  <div class="post-item mb-4 p-3 border rounded shadow-sm bg-white">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                      <span class="badge bg-danger">Event</span>
+                      <small class="text-muted">From: <?php echo $row['startDate']; ?></small>
+                    </div>
+                    
+                    <h5 class="fw-bold"><?php echo htmlspecialchars($row['title']); ?></h5>
+                    <p class="text-secondary"><?php echo nl2br(htmlspecialchars($row['description'])); ?></p>
 
+                    <?php if (!empty($row['imageURL'])): ?>
+                      <div class="post-img-container mb-3">
+                        <img src="../uploads/<?php echo htmlspecialchars($row['imageURL']); ?>" class="img-fluid rounded" alt="Post image" style="max-height: 400px; width: 100%; object-fit: cover;">
+                      </div>
+                    <?php endif; ?>
+
+                    <div class="d-flex justify-content-between align-items-center border-top pt-2">
+                      <span class="small text-muted"><i class="bi bi-geo-alt"></i> <?php echo htmlspecialchars($row['loc']); ?></span>
+                      <button class="btn btn-sm btn-outline-danger">
+                        <i class="bi bi-heart"></i> Like
+                      </button>
+                    </div>
+                  </div>
+
+                <?php endwhile; ?>
+              <?php else: ?>
+                <p class="text-center text-muted py-5">Aucun événement publié pour le moment.</p>
+              <?php endif; ?>
+            </div>
           </div>
-
-          <div id="panel-calendar" class="d-none blank-panel">
-            <i class="bi bi-calendar3 text-secondary"></i>
-            <span class="text-secondary">My Calendar — coming soon</span>
-          </div>
-
-          <div id="panel-profile" class="d-none blank-panel">
-            <i class="bi bi-person-circle text-secondary"></i>
-            <span class="text-secondary">Profile — coming soon</span>
-          </div>
-
         </div>
       </div>
-
     </div>
   </div>
 
-  <div class="modal fade" id="addPostModal" tabindex="-1" aria-labelledby="addPostModalLabel" aria-hidden="true">
+  <div class="modal fade" id="addPostModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
-      <div class="modal-content" style="border-radius:18px; border:none;">
-        <div class="modal-header" style="border-bottom:1px solid #f0f0f0; padding:1.2rem 1.6rem;">
-          <h5 class="modal-title" id="addPostModalLabel" style="font-weight:700; font-size:1rem;">New Post</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-content" style="border-radius:18px;">
+        <div class="modal-header">
+          <h5 class="modal-title">New Post</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
-        <div class="modal-body" style="padding:1.6rem;">
-          <form id="addPostForm" action="create_event.php" method="POST" enctype="multipart/form-data">
+        <div class="modal-body">
+          <form action="create_event.php" method="POST" enctype="multipart/form-data">
             <div class="row g-3">
-
-              <div class="col-12 col-sm-6">
-                <label class="form-label"><i class="bi bi-flag"></i> Category</label>
-                <select class="form-select" name="category">
-                  <option selected>Event</option>
-                  <option>Workshop</option>
-                  <option>Competition</option>
-                  <option>Announcement</option>
-                  <option>Other</option>
-                </select>
-              </div>
-
-              <div class="col-12 col-sm-6">
-                <label class="form-label"><i class="bi bi-pencil"></i> Content</label>
-                <input type="text" class="form-control" name="content" />
-              </div>
-
-              <div class="col-12 col-sm-6">
-                <label class="form-label"><i class="bi bi-geo-alt"></i> Place</label>
-                <input type="text" class="form-control" name="place" />
-              </div>
-
-              <div class="col-12 col-sm-6">
-                <label class="form-label"><i class="bi bi-clock"></i> Date</label>
-                <input type="date" class="form-control" name="date" />
-              </div>
-
               <div class="col-12">
-                <label class="form-label">Caption</label>
-                <textarea class="form-control" name="caption" rows="4"></textarea>
+                <label class="form-label">Title</label>
+                <input type="text" class="form-control" name="title" required />
               </div>
-
               <div class="col-12 col-sm-6">
-                <label class="form-label">Photo</label>
-                <label class="photo-upload-label" for="photoInput">
-                  <i class="bi bi-camera"></i>
-                  <span>Add/ preview photo</span>
-                </label>
-                <input type="file" id="photoInput" name="photo" accept="image/*" />
+                <label class="form-label">Location (loc)</label>
+                <input type="text" class="form-control" name="loc" />
               </div>
-
-              <div class="col-12 col-sm-6">
-                <label class="form-label">In collaboration with</label>
-                <select class="form-select" name="collaboration">
-                  <option selected>None</option>
-                  <option>IEEE INSAT</option>
-                  <option>GDSC INSAT</option>
-                  <option>Enactus INSAT</option>
-                  <option>Other</option>
-                </select>
+              <div class="col-12 col-sm-3">
+                <label class="form-label">Start Date</label>
+                <input type="date" class="form-control" name="startDate" />
               </div>
-
+              <div class="col-12 col-sm-3">
+                <label class="form-label">End Date</label>
+                <input type="date" class="form-control" name="endDate" />
+              </div>
+              <div class="col-12">
+                <label class="form-label">Description</label>
+                <textarea class="form-control" name="description" rows="4"></textarea>
+              </div>
+              <div class="col-12">
+                <label class="form-label">Photo (imageURL)</label>
+                <input type="file" class="form-control" name="photo" accept="image/*" />
+              </div>
               <div class="col-12 d-flex justify-content-end gap-3 mt-2">
-                <button type="button" class="btn-cancel" data-bs-dismiss="modal"
-                  onclick="document.getElementById('addPostForm').reset()">Cancel</button>
-                <button type="submit" class="btn-maroon">Post</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-danger">Post</button>
               </div>
-
             </div>
           </form>
         </div>
@@ -199,19 +184,17 @@ require_once "connection.php";
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
   <script>
     function switchPanel(btn) {
-      document.querySelectorAll('.sidebar-nav .nav-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-
       ['myposts', 'calendar', 'profile'].forEach(id => {
-        document.getElementById('panel-' + id).classList.add('d-none');
+        document.getElementById('panel-' + id)?.classList.add('d-none');
       });
-
-      document.getElementById('panel-' + btn.dataset.panel).classList.remove('d-none');
+      document.getElementById('panel-' + btn.dataset.panel)?.classList.remove('d-none');
     }
   </script>
-
 </body>
 </html>
+
+
