@@ -40,7 +40,7 @@ CREATE TABLE EVENT(
     FOREIGN KEY(id_Club) REFERENCES Club(id)
 );
 
-CREATE TABLE LIKE(
+CREATE TABLE LIKES(
     id_Student INT PRIMARY KEY,
     id_Club INT PRIMARY KEY,
     dateLike Date,
