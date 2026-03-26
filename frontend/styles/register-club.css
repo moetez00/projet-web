@@ -117,7 +117,7 @@ body{
 
 .right-section {
     flex:1.2;
-    background-image: url('/frontend/assets/img/insatshadow.png');
+    background-image: url('../assets/img/insatshadow.png');
     background-size: cover;
     background-position: center;
     position: relative;

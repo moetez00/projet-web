@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>INSAT PULSE - Register Club</title>
-    <link rel="stylesheet" href="/frontend/styles/register-club.css">
+    <link rel="stylesheet" href="../styles/register-club.css">
 </head>
 <body>
     <div class="container">
@@ -14,10 +14,10 @@
             </div>
             <div class="form-container">
                 <div class="logo">
-                    <img src="/frontend/assets/img/logo.png" alt="INSAT PULSE Logo" class="logo-img">
+                    <img src="../assets/img/logo.png" alt="INSAT PULSE Logo" class="logo-img">
                 </div>
                 <h2 class="form-title">Request a club account</h2>
-                <form class="registration-form">
+                <form class="registration-form" action="../../backend/registerClub.php" method="post">
                     <div class="form-group">
                         <label for="clubname">Club's name</label>
                         <input type="text" id="clubname" name="clubname" required>
@@ -29,10 +29,13 @@
                     <div class="form-group">
                         <label for="password">Password</label>
                         <input id="password" type="password" name="password" required>
+                        <p id="password-weak" style="color:red;display:none">Password must have at least 8 characters.</p>
+
                     </div>
                     <div class="form-group">
                         <label for="repeat-password">Repeat password</label> 
                         <input id="repeat-password" name="repeat-password" type="password" required>
+                        <p id="password-mismatch" style="color:red;display:none">Verify your password.</p>
                     </div>
                     <button type="submit" class="submit-btn">Send request</button>
                 </form>
@@ -44,5 +47,40 @@
             </div>
         </div>
     </div>
+    <script>
+        let submit=false;
+        document.querySelector("button[type=submit]").addEventListener("click",function(event){
+            if(!submit){
+            event.preventDefault();
+            }
+        })
+        document.querySelector("input[id=repeat-password]").addEventListener("input",function(){
+            let repeat=this;
+            let pass=document.querySelector("input[id=password]");
+            if((!repeat.checked && !pass.checked) && repeat.value!=pass.value){
+                document.querySelector("p[id=password-mismatch]").style.display="inline";
+                submit=false;
+            }
+            else{
+                document.querySelector("p[id=password-mismatch]").style.display="none";
+                submit=true;
+            }
+    });
+
+     document.querySelector("input[id=password]").addEventListener("input",function(){
+            let pass=this;
+            if(pass.value.length<8){
+                console.log("dh3if");
+                document.querySelector("p[id=password-weak]").style.display="inline";
+                submit=false;
+            }
+            
+            else{
+                document.querySelector("p[id=password-weak]").style.display="none";
+                submit=true;
+            }
+    });
+
+    </script>
 </body>
 </html>  
