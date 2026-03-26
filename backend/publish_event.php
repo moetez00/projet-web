@@ -1,10 +1,10 @@
 <?php
 
-session_start(); 
-if (!isset($_SESSION['club_id'])) {
-    header("Location: login.php"); 
-    exit();
-}
+#session_start(); 
+#if (!isset($_SESSION['club_id'])) {
+ #   header("Location: login.php"); 
+  #  exit();
+#}
 
 require_once "connection.php"; 
 ?>
