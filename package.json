@@ -1,0 +1,25 @@
+{
+  "name": "projet-web",
+  "version": "1.0.0",
+  "description": "University social platform — Bootstrap installed via npm, CSS/JS served from node_modules/",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moetez00/projet-web.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/moetez00/projet-web/issues"
+  },
+  "homepage": "https://github.com/moetez00/projet-web#readme",
+  "dependencies": {
+    "bootstrap": "^5.3.8",
+    "bootstrap-icons": "^1.13.1"
+  }
+}
