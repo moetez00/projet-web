@@ -1,0 +1,8 @@
+/*
+ * public/assets/css/style.css — Custom Styles
+ * ---------------------------------------------
+ * Project-specific overrides layered on top of Bootstrap.
+ * Loaded after Bootstrap in includes/templates/header.php.
+ * Sections to fill in: typography, navbar customisation,
+ * event-card tweaks, club-card tweaks, form styling, utility classes.
+ */
