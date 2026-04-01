@@ -1,8 +1,10 @@
 .env
-.venv/
-package-lock.json
 node_modules/
-.vscode/
-*.lock
 vendor/
+uploads/*
+!uploads/.gitkeep
+*.lock
+package-lock.json
+.claude/
+.vscode/
 
