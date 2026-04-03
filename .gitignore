@@ -1,8 +1,7 @@
 .env
 node_modules/
 vendor/
-uploads/**/*
-!uploads/**/.gitkeep
+
 *.lock
 package-lock.json
 .claude/
