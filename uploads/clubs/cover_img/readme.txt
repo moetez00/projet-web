@@ -1,1 +1,0 @@
-this folder is for cover pics for clubs
