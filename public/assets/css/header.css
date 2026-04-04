@@ -1,5 +1,8 @@
 .navbar-pulse {
-  background-color: #f1b9b1;
+  background-color: #8F1402;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 .navbar-pulse .nav-link,
 .navbar-pulse .navbar-text {

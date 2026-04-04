@@ -4,19 +4,21 @@ error_reporting(E_ALL);
 
 require_once '../includes/db.php';
 require_once __DIR__ . '/../includes/models/ClubModel.php';
+//require_once __DIR__ . '/../../includes/auth.php';
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
+//checkAuth();
 
-$club_id = $_GET['id'] ?? 1;
-$clubModel = new ClubModel($connection);
-$club = $clubModel->findById($club_id);
-$events = $clubModel->getEvents($club_id);
 
-if (!$club) {
-    die("Club introuvable.");
-}
+// $club_id = $_SESSION['user']['id'] ?? null;
+
+// $clubModel = new ClubModel($connection);
+// $club = $clubModel->findById($club_id);
+// $events = $clubModel->getEvents($club_id);
+
+// if (!$club) {
+//     die("Club introuvable.");
+// }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,28 +26,25 @@ if (!$club) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>INSAT Pulse – <?php echo htmlspecialchars($club['name']); ?></title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/club.css">
+     <link rel="stylesheet" href="assets/css/header.css">
+
 </head>
+
 <body style="background: linear-gradient(135deg, #fde8e0 0%, #f9d5d3 40%, #f5c6c8 100%); min-height: 100vh;">
-
-    <nav class="insat-navbar">
-        <a class="brand-logo" href="index.php" style="text-decoration: none;">
-            <i class="bi bi-activity pulse-icon"></i>
-            <span class="brand-text">INSAT<span>-PULSE</span></span>
-        </a>
-        
-        <div class="user-badge ms-auto">
-            <div class="user-info">
-                <div class="name"><?php echo htmlspecialchars($club['name']); ?></div>
-            </div>
-            <div class="avatar-circle">
-                <img src="<?php echo $club['profile_img'] ?: 'https://placehold.co/42x42/f0e0e0/8B0000?text=CB'; ?>" alt="avatar" style="width: 100%; height: 100%; object-fit: cover;">
-            </div>
-        </div>
-    </nav>
-
+    <?php include __DIR__ . '/../includes/templates/header.php'; ?>
+    <?php
+    $club_id = $_SESSION['user']['id'] ?? null;
+    $clubModel = new ClubModel($connection);
+    $club = $clubModel->findById($club_id);
+    $events = $clubModel->getEvents($club_id);
+    if (!$club) {
+        die("Club introuvable.");
+    }
+    ?>
     <div class="page-body">
         <div class="row g-4">
 

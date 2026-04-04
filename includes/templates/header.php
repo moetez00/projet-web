@@ -10,21 +10,15 @@
  */
 include __DIR__ . '/../auth.php';
 checkAuth();
-
 ?>
-<!-- Bootstrap CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<!-- Bootstrap Icons -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-<!-- Header CSS -->
-<link href="header.css" rel="stylesheet">
+
 
 <nav class="navbar navbar-pulse py-2">
   <div class="container d-flex align-items-center justify-content-between">
 
     <!-- Logo -->
     <a href="index.php">
-  <img src="../../public/assets/images/logo.png" alt="INSAT Pulse" height="60">
+  <img src="assets/images/logo.png" alt="INSAT Pulse" height="60">
 </a>
 
 
@@ -62,3 +56,6 @@ checkAuth();
         </div>';
       }
      ?>
+     </div>  <!-- close user-section -->
+  </div>  <!-- close container -->
+</nav> 

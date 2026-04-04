@@ -23,7 +23,7 @@
         $user = $result->fetch_assoc();
         if ($user['role'] !== 'club_NotConfirmed') {
             $_SESSION['user'] = $user;//returned not just the username but all the info about the user so if we access the role it should be $_SESSION['user']['role']
-            header('location:../index.php');
+            header('location:../club.php');
         }
         else {
             $_SESSION['login_error'] = 'Your account is not yet confirmed.';
