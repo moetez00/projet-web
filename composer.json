@@ -1,8 +1,4 @@
 {
-    // composer.json — PHP dependency manager config
-    // Requires vlucas/phpdotenv to parse the .env file at app boot.
-    // Run `composer install` once to generate vendor/ and the autoloader.
-    // The autoloader is loaded in includes/config.php before anything else.
     "require": {
         "vlucas/phpdotenv": "^5.6"
     }

@@ -1,3 +1,4 @@
+<?php session_start();?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,54 +15,60 @@
 <body>
     <div class="login-container">
         <div class="row g-0">
-            <!-- Left Section - 6 columns -->
+
             <div class="col-lg-5">
                 <div class="left-section">
-                    <!-- logo 1 -->
+
                     <div class="logo">
                         <img src="assets/images/logo.png" alt="INSAT Pulse Logo">
                     </div>
 
-                    <!-- Login your account -->
+
                     <h1 class="login-text">Login your account</h1>
+                    <form class="login-form"  action="actions/do-login.php" method="post">
 
-                    <!-- Frame 4 (main form container) -->
-                    <div class="frame-4">
-                        
-                        <!-- Frame 2 (Username section) -->
-                        <div class="frame-2">
-                            <label class="form-label">Username or Email</label>
-                            <div class="rectangle-2">
-                                <input type="text" class="form-control">
+                        <div class="frame-4">
+
+                            <div class="frame-2">
+                                <label class="form-label">Email</label>
+                                <div class="rectangle-2">
+                                    <input type="text" class="form-control" id="email" name="email" required>
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- Frame 3 (Password section) -->
-                        <div class="frame-3">
-                            <label class="form-label">Password</label>
-                            <div class="rectangle-3">
-                                <input type="password" class="form-control">
+                            <div class="frame-3">
+                                <label class="form-label">Password</label>
+                                <div class="rectangle-3">
+                                    <input type="password" class="form-control" type="password" name="password" required>
+                                </div>
                             </div>
+                            <?php if (isset($_SESSION['login_error'])): ?>
+                                <small style="color: red;">
+                                    <?= $_SESSION['login_error']; ?>
+                                </small>
+                                <?php 
+                                    unset($_SESSION['login_error']); 
+                                ?>
+                            <?php endif; ?>
+
+                            <div class="frame-1">
+                                <a href="#" class="forgot-password-link">Forgot password?</a>
+                                <button type="submit" class="login-button">Login</button>
+                            </div>
+
                         </div>
+                    </form>
 
-                        <!-- Frame 1 (Forgot password + Login button) -->
-                        <div class="frame-1">
-                            <a href="#" class="forgot-password-link">Forgot password?</a>
-                            <button type="button" class="login-button">Login</button>
-                        </div>
-
-                    </div>
-
-                    <!-- Don't have an account? Register now -->
                     <div class="register">
                         <p>Don't have an account? <a href="#" class="register-link">Register now</a></p>
                     </div>
+                    
                 </div>
             </div>
 
-            <!-- Right Section - 6 columns -->
+
             <div class="col-lg-7">
-                <!-- Frame 6 -->
+
                 <div class="frame-6">
                     <h1 class="hero-text">WHERE TODAY'S IDEAS TURN INTO TOMORROW'S REALITY</h1>
                 </div>

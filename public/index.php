@@ -8,3 +8,6 @@
  *              FollowModel::getFollowedClubs() for logged-in student.
  * Includes: includes/auth.php, header.php, footer.php, event-card.php, club-card.php
  */
+
+echo "hi there";
+?>

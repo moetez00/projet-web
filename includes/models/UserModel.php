@@ -12,3 +12,21 @@
  *   verifyPassword($plain, $hash)
  *   updateAvatar($id, $path)
  */
+
+class UserModel {
+    private $db;
+
+    public function __construct($connection) {
+        $this->db = $connection;
+    }
+
+    public function findByEmailANDpassword($email,$password) {
+        $stmt = $this->db->prepare('SELECT * FROM user WHERE email = ? and password = ?');
+        
+        $stmt->bind_param("ss", $email, $password);
+        $stmt->execute();
+        return $stmt->get_result();
+    }
+
+
+}
