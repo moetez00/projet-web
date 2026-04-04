@@ -15,12 +15,6 @@
                     <img src="assets/images/logo_cropped.png" alt="INSAT PULSE Logo" class="logo-img" height="600" width="800">
                 </div>
                 <h2 class="form-title">Create a student account</h2>
-                
-
-                
-
-                
-
                 <form class="resgistration-form"  action="actions/do-register-student.php" method="post">
                     <div class="form-group">
                         <label for="Full name">Full name</label>

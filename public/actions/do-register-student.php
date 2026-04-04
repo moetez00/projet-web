@@ -28,11 +28,12 @@
                         echo "Error creating STUDENT entry: " . $connection->error;
                     }
                 }
-                else{
+            }
+            else{
                 $_SESSION['username_error'] = 'This username is already used.';
                 header('Location: ../register-student.php');
-                }
             }
+            
         
         } 
         else{
