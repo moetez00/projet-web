@@ -1,15 +1,19 @@
 <?php
-/*
- * includes/models/ClubModel.php
- * ------------------------------
- * OOP model for the `club` table.
- * Connects to: database/schema.sql → club JOIN user
- *
- * Methods:
- *   create($userId, $name, $description, $category)
- *   findById($id)
- *   findByUserId($userId)
- *   getAll()
- *   getFollowerCount($clubId)
- *   updateProfile($clubId, $data)
- */
+
+class ClubModel {
+    private $db;
+
+    public function __construct($connection) {
+        $this->db = $connection;
+    }
+
+    public function createClub($newUserID, $CLUBNAME){
+        $stmt = $this->db->prepare('INSERT INTO club (user_id, name) VALUES (?, ?)');
+        $stmt->bind_param("is", $newUserID, $CLUBNAME); 
+        return $stmt->execute();
+    }
+
+
+
+
+}
