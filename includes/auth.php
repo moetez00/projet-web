@@ -30,7 +30,8 @@ function requireLogin(){
         header('location:../public/login.php');
         }
 }
-
-
+function getRole(){
+    return $_SESSION['user']['role'];
+}
 ?>
 

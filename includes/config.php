@@ -16,7 +16,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
     catch (Exception $e) {die('Error: .env file not found in the project root.');
     }
     $dotenv->required(['DB_HOST', 'DB_NAME', 'DB_USER', 'DB_PASS']);
-
+    
     $servername =$_ENV['DB_HOST'];
     $dbname=$_ENV['DB_NAME'];
     $username = $_ENV['DB_USER'];
