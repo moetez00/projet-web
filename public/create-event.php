@@ -44,9 +44,8 @@ if (!isset($_SESSION['user'])) {
                         <h2 style="font-weight: 800; margin: 0; color: #1a1a1a; font-size: 1.4rem;">Publish New Event</h2>
                     </div>
 
-                    <form action="actions/save-event.php" method="POST" enctype="multipart/form-data">
+                    <form action="actions/do-create-event.php" method="POST" enctype="multipart/form-data">
                         <div class="row g-4">
-                            
                             <div class="col-12">
                                 <label class="form-label"><i class="bi bi-type"></i> Event Title</label>
                                 <input type="text" name="title" class="form-control" placeholder="Enter a catchy title" required>
