@@ -1,0 +1,56 @@
+.navbar-pulse {
+  background-color: #f1b9b1;
+}
+.navbar-pulse .nav-link,
+.navbar-pulse .navbar-text {
+  color: #000000;
+}
+.navbar-pulse .nav-link:hover {
+  color: #000000;
+}
+.navbar-pulse .search-input {
+  background-color: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #000000;
+  border-radius: 20px;
+  padding: 5px 15px;
+  font-size: 0.9rem;
+  width: 220px;
+  transition: all 0.3s ease;
+}
+.navbar-pulse .search-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+.navbar-pulse .search-input:focus {
+  background-color: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.6);
+  outline: none;
+  box-shadow: none;
+  width: 260px;
+}
+
+.user-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #000000;
+}
+.user-section .user-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1.2;
+}
+.user-section .user-handle {
+  font-size: 0.75rem;
+  opacity: 0.75;
+}
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.15);
+}
