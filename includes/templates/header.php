@@ -8,7 +8,7 @@
  *            and conditional links for Login/Register or Profile/Logout based on auth status.
  * Required by: All public/*.php files (must be included first)
  */
-include '../auth.php';
+include __DIR__ . '/../auth.php';
 checkAuth();
 
 ?>
@@ -62,15 +62,3 @@ checkAuth();
         </div>';
       }
      ?>
-
-        
-        
-        
-      
-    </div>
-
-  </div>
-</nav>
-
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
