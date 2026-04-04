@@ -10,7 +10,10 @@
 
 /*nediwelha fi awwel koll page bech nthabtou sar log in walla*/
 function checkAuth(){
-    session_start();
+    if (!isset($_SESSION)) {
+        session_start();
+    }
+    
     require_once 'autoloader.php';
     if (!isLoggedIn()) {
         requireLogin();
