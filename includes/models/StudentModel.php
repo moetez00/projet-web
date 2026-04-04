@@ -1,14 +1,17 @@
 <?php
-/*
- * includes/models/StudentModel.php
- * ---------------------------------
- * OOP model for the `student` table.
- * Extends or delegates to UserModel for auth fields.
- * Connects to: database/schema.sql → student JOIN user
- *
- * Methods:
- *   create($userId, $lastName, $firstName, $major, $year)
- *   findByUserId($userId)
- *   getProfile($studentId)
- *   updateProfile($studentId, $data)
- */
+
+class StudentModel {
+    private $db;
+
+    public function __construct($connection) {
+        $this->db = $connection;
+    }
+
+    public function createStudent($newUserID, $STUDENTNAME){
+        $stmt = $this->db->prepare('INSERT INTO student (user_id, fullName) VALUES (?, ?)');
+        $stmt->bind_param("is", $newUserID, $STUDENTNAME); 
+        return $stmt->execute();
+    }
+
+
+}

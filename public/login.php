@@ -22,8 +22,6 @@
                     <div class="logo">
                         <img src="assets/images/logo.png" alt="INSAT Pulse Logo">
                     </div>
-
-
                     <h1 class="login-text">Login your account</h1>
                     <form class="login-form"  action="actions/do-login.php" method="post">
 
