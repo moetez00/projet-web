@@ -41,6 +41,12 @@ class ClubModel
         $stmt->execute();
         return $stmt->get_result();
     }
+    public function addEvent($club_id, $title, $description, $event_date, $place, $image) {
+        $sql = "INSERT INTO event (club_id, title, description, event_date, place, image) VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = $this->db->prepare($sql); 
+        $stmt->bind_param("isssss", $club_id, $title, $description, $event_date, $place, $image); // Utilise $image
+        return $stmt->execute(); 
+}
     public function editClub($clubId, $newName, $newDescription, $category, $coverImg, $newProfileImg)
     {
         if ($coverImg != null && $newProfileImg == null) {

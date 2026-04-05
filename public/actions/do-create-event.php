@@ -3,7 +3,7 @@ session_start();
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 require '../../includes/db.php';
-session_start();
+require_once '../../includes/models/ClubModel.php';
 if($_SERVER['REQUEST_METHOD']==='POST'){
     $club_id=$_SESSION['user']['id'];
     $title=$_POST['title'];
@@ -17,14 +17,11 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
         // Dossier de destination
         move_uploaded_file($_FILES['photo']['tmp_name'], "../uploads/" . $imageName);
     }
-
-    $sql="insert into event (club_id,title,description,event_date,place,image) values(?,?,?,?,?,?)";
-    $stmt=$connection->prepare($sql);
-    $stmt->bind_param("isssss",$club_id, $title, $description, $event_date, $place, $imageName);
-    if ($stmt->execute()) {
+    $model = new ClubModel($connection);
+    if ($model->addEvent($club_id, $title, $description, $event_date, $place, $imageName)) {
         header("Location: ../club.php?id=$club_id&success=1");
-        exit();
     } else {
-        die("Erreur SQL : " . $stmt->error);
+        header("Location: ../club.php?id=$club_id&error=sql");
     }
+    exit();
 }
