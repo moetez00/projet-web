@@ -8,7 +8,7 @@
     <title>INSAT Pulse - Login</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../public/assets/css/login.css">
+    <link rel="stylesheet" href="assets/css/login.css">
     <link rel="icon" type="image/x-icon" href="assets/images/logo.png">
 </head>
 
