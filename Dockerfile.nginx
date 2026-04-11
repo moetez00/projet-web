@@ -6,6 +6,8 @@ RUN apk add --no-cache openssl
 
 COPY public ./public
 COPY docker/nginx/default.conf /etc/nginx/templates/default.conf.template
+COPY docker/nginx/10-init-cert.sh /docker-entrypoint.d/10-init-cert.sh
+RUN chmod +x /docker-entrypoint.d/10-init-cert.sh
 
 EXPOSE 80
 EXPOSE 443
