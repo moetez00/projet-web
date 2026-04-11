@@ -58,7 +58,7 @@
                     </form>
 
                     <div class="register">
-                        <p>Don't have an account? <a href="#" class="register-link">Register now</a></p>
+                        <p>Don't have an account? <a href="register.php" class="register-link">Register now</a></p>
                     </div>
                     
                 </div>

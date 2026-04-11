@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Choice</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap CSS v5.2.1 -->
+    <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/choice.css">
+
+</head>
+
+<body>
+
+    <main>
+        <div class="container-fluid">
+            <div class="row  g-2">
+                <div class="col-lg-6 col-12">
+                    <div class="row ">
+                        <a class="nav-link col-2 login-ref" href="../login/index.html">&lt;Login</a>
+                    </div>
+                    <div class="row logo-container">
+                        <div class="logo"></div>
+                    </div>
+                    <div class="row justify-content-center align-items-center g-2">
+                        <p class="create-account">Choose account type</p>
+                    </div>
+                    <div class="row justify-content-center align-items-center gap-4">
+                        <button type="button" name="Club" id="" class="choice-btn col-7"
+                            onclick="window.location.href='register-club.php'" ;>
+                            <img src="assets/images/h 1.png" alt="">
+                            Club
+                        </button>
+
+                        <button type="button" name="Student" id="" class="choice-btn col-7"
+                            onclick="window.location.href='register-student.php'" ;>
+                            <img src="assets/images/h 2.png" alt="">
+                            Student
+                        </button>
+
+
+                    </div>
+                    <div class="row txt2 justify-content-center align-items-center">
+                        <div class="col-8 al  justify-content-center align-items-center">Already have an account? <span
+                                class="login-now" onclick="window.location.href='index.php'">Login now</span>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+                <div class="col-lg-6">
+                    <div class="row right-section justify-content-center align-items-center ">
+                        <div class="col-12">
+                            <h1 class="quote">WHERE TODAY’S IDEAS TURN <br>INTO TOMORROW’S REALITY</h1>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Bootstrap JavaScript Libraries -->
+    <script src="/node_modules/bootstrap/dist/umd/popper.min.js"></script>
+
+    <script src="//node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+</body>
+
+</html>
