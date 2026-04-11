@@ -1,7 +1,7 @@
 FROM php:8.2-fpm
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends unzip libzip-dev \
+    && apt-get install -y --no-install-recommends unzip npm libzip-dev \
     && docker-php-ext-install mysqli pdo pdo_mysql \
     && rm -rf /var/lib/apt/lists/*
 
