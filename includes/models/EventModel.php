@@ -50,4 +50,24 @@ class EventModel {
         // Placeholder for like count logic
         return 0;
     }
+    
+
+
+    public function getFeedPosts($studentId) {
+        $stmt = $this->db->prepare(
+            'SELECT e.*, u.username, u.profile_img, c.name AS club_name
+            FROM event e
+            JOIN club c ON e.club_id = c.user_id
+            JOIN user u ON c.user_id = u.id
+            ORDER BY 
+                CASE WHEN e.club_id IN (
+                    SELECT club_id FROM follow WHERE student_id = ?
+                ) THEN 0 ELSE 1 END,
+                e.event_date DESC'
+        );
+        $stmt->bind_param("i", $studentId);
+        $stmt->execute();
+        return $stmt->get_result();
+    }
+
 }
