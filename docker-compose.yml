@@ -1,0 +1,69 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: insatpulse_app
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT:-3306}
+      DB_NAME: ${DB_NAME:-insatpulse_db}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
+    command: >
+      sh -c "mkdir -p /var/www/html/public/uploads/users/profile_img /var/www/html/public/uploads/users/cover_img
+      && chown -R www-data:www-data /var/www/html/public/uploads
+      && php-fpm"
+    expose:
+      - "9000"
+    volumes:
+      - app_uploads:/var/www/html/public/uploads
+    restart: unless-stopped
+
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    container_name: insatpulse_nginx
+    environment:
+      DOMAIN: ${DOMAIN:-example.com}
+    command: >
+      /bin/sh -c "if [ ! -f /etc/letsencrypt/live/default/fullchain.pem ]; then
+      mkdir -p /etc/letsencrypt/live/default;
+      openssl req -x509 -nodes -newkey rsa:2048 -days 1
+      -keyout /etc/letsencrypt/live/default/privkey.pem
+      -out /etc/letsencrypt/live/default/fullchain.pem
+      -subj '/CN=localhost';
+      fi;
+      nginx -g 'daemon off;'"
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - app_uploads:/var/www/html/public/uploads:ro
+      - certbot_etc:/etc/letsencrypt
+      - certbot_www:/var/www/certbot
+    restart: unless-stopped
+
+  certbot:
+    image: certbot/certbot:latest
+    container_name: insatpulse_certbot
+    profiles:
+      - certbot
+    volumes:
+      - certbot_etc:/etc/letsencrypt
+      - certbot_www:/var/www/certbot
+    command: >
+      certonly --webroot -w /var/www/certbot
+      --cert-name default
+      --email ${CERTBOT_EMAIL:-admin@example.com}
+      --agree-tos --no-eff-email
+      -d ${DOMAIN:-example.com}
+      -d www.${DOMAIN:-example.com}
+
+volumes:
+  app_uploads:
+  certbot_etc:
+  certbot_www:

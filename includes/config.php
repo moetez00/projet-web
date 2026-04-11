@@ -9,18 +9,26 @@
  */
 
 require_once __DIR__ . '/../vendor/autoload.php';
-    try {
-        $dotenv = Dotenv\Dotenv::createImmutable(__DIR__. '/..');
-        $dotenv->load();
-    } 
-    catch (Exception $e) {die('Error: .env file not found in the project root.');
+
+    $envFile = __DIR__ . '/../.env';
+    if (file_exists($envFile)) {
+        $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
+        $dotenv->safeLoad();
     }
-    $dotenv->required(['DB_HOST', 'DB_NAME', 'DB_USER', 'DB_PASS']);
-    
-    $servername =$_ENV['DB_HOST'];
-    $dbname=$_ENV['DB_NAME'];
-    $username = $_ENV['DB_USER'];
-    $password = $_ENV['DB_PASS'];
+
+    $requiredVars = ['DB_HOST', 'DB_NAME', 'DB_USER', 'DB_PASS'];
+    foreach ($requiredVars as $var) {
+        $value = $_ENV[$var] ?? getenv($var);
+        if ($value === false || $value === null || $value === '') {
+            die('Error: missing required environment variable ' . $var);
+        }
+    }
+
+    $servername = $_ENV['DB_HOST'] ?? getenv('DB_HOST');
+    $dbport = (int)($_ENV['DB_PORT'] ?? getenv('DB_PORT') ?: 3306);
+    $dbname = $_ENV['DB_NAME'] ?? getenv('DB_NAME');
+    $username = $_ENV['DB_USER'] ?? getenv('DB_USER');
+    $password = $_ENV['DB_PASS'] ?? getenv('DB_PASS');
 
 
 ?>

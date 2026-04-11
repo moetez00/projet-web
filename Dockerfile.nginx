@@ -1,0 +1,11 @@
+FROM nginx:1.27-alpine
+
+WORKDIR /var/www/html
+
+RUN apk add --no-cache openssl
+
+COPY public ./public
+COPY docker/nginx/default.conf /etc/nginx/templates/default.conf.template
+
+EXPOSE 80
+EXPOSE 443
