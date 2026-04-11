@@ -26,7 +26,7 @@ $sessionUser = $_SESSION['user'];
             <line x1="21" y1="21" x2="16.65" y2="16.65"/>
         </svg>
         <input type="text" placeholder="Search clubs, events…">
->>>>>>> da1d6e1bc283607896ed09ef3fb3fbe1f7cd166f
+
     </div>
 
     <div class="user-section">

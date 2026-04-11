@@ -34,13 +34,14 @@ if ($_SESSION['user']['role'] !== 'student') {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/header.css">
 </head>
-<body>
+<body style="background: linear-gradient(135deg, #fde8e0 0%, #f9d5d3 40%, #f5c6c8 100%); min-height: 100vh;">
+
     <?php include __DIR__ . '/../includes/templates/header.php'; ?>
 
     <?php 
     $studentId = $_SESSION['user']['id'];
 
-    //$followModel = new FollowModel($connection);
+    $followModel = new FollowModel($connection);
     //$followed =  $followModel -> getFollowedClubs($studentId);
 
     // les posts de ces clubs en premier
@@ -48,34 +49,56 @@ if ($_SESSION['user']['role'] !== 'student') {
     $posts = $eventModel->getFeedPosts($studentId);
     ?>
     <div class="container mt-4">
-    <?php if ($posts->num_rows > 0): ?>
-        <?php while ($post = $posts->fetch_assoc()): ?>
-            <div class="card mb-3">
-                <?php if (!empty($post['image'])): ?>
-                    <img src="uploads/<?php echo $post['image']; ?>" class="card-img-top">
-                <?php endif; ?>
-                <div class="card-body">
-                    <h5><?php echo $post['title']; ?></h5>
-                    <p><?php echo $post['description']; ?></p>
-                    <small>
-                        <?php echo $post['username']; ?> | 
-                        <?php echo $post['club_name']; ?> | 
-                        <?php echo $post['event_date']; ?>
-                    </small>
-                    <form action="actions/do-follow.php" method="POST">
-                        <input type="hidden" name="club_id" value="<?php echo $post['club_id']; ?>">
-                        <button type="submit" class="btn btn-sm mt-2" style="background-color:#8F1402; color:white;">
-                            Follow
-                        </button>
-                    </form>
-
+        <div class="row">
+            <!-- COLONNE GAUCHE -->
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-header" style="background-color:#8F1402; color:white;">
+                        <h5 class="mb-0">Upcoming Schedule</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted">No upcoming events.</p>
+                    </div>
                 </div>
             </div>
-        <?php endwhile; ?>
-    <?php else: ?>
-        <p>No posts yet.</p>
-    <?php endif; ?>
-</div>
+
+            <!-- COLONNE DROITE = les posts -->
+            <div class="col-md-9">
+                <?php if ($posts->num_rows > 0): ?>
+                    <?php while ($post = $posts->fetch_assoc()): ?>
+                        <?php $isFollowing = $followModel->isFollowing($studentId, $post['club_id']); ?>
+                        <div class="card mb-3">
+
+                            <?php if (!empty($post['image'])): ?>
+                                <img src="uploads/<?php echo $post['image']; ?>" class="card-img-top">
+                            <?php endif; ?>
+                            <div class="card-body">
+                                <h5><?php echo $post['title']; ?></h5>
+                                <p><?php echo $post['description']; ?></p>
+                                <small>
+                                    <?php echo $post['username']; ?> |
+                                    <span style="color:#8F1402;"><?php echo $post['club_name']; ?></span> |
+                                    <?php echo $post['event_date']; ?>
+                                </small>
+                                <div class="d-flex gap-2">
+                                    <form action="actions/do-follow.php" method="POST">
+                                        <input type="hidden" name="club_id" value="<?php echo $post['club_id']; ?>">
+                                        <button type="submit" class="btn btn-sm mt-2" style="background-color:#8F1402; color:white;">
+                                            <?php echo $isFollowing ? 'Unfollow' : 'Follow'; ?>
+                                        </button>
+                                    </form>
+                                    <button class="btn btn-sm mt-2" style="background-color:#8F1402; color:white;">Like</button>
+                                    <!-- hnaaa abd bech yamel l like w tetzed lel scedule! -->
+                                </div>
+                            </div>
+                        </div>
+                    <?php endwhile; ?>
+                <?php else: ?>
+                    <p>No posts yet.</p>
+                <?php endif; ?>
+            </div> <!-- fin col-md-8 -->
+        </div> 
+    </div>
 
 </body>
 </html>

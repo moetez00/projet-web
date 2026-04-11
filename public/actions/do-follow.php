@@ -21,7 +21,11 @@ $studentId = $_SESSION['user']['id'];
 $clubId = $_POST['club_id'];
 
 $followModel = new FollowModel($connection);
-$followModel->follow($studentId, $clubId);
+if ($followModel->isFollowing($studentId, $clubId)) {
+    $followModel->unfollow($studentId, $clubId);
+} else {
+    $followModel->follow($studentId, $clubId);
+}
 
 header('Location: ../index.php');
 exit();
