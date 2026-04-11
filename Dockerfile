@@ -11,6 +11,8 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 COPY composer.json composer.lock ./
 RUN composer install --no-interaction --no-progress --prefer-dist
+COPY package.json ./
+RUN npm install
 
 COPY . .
 
