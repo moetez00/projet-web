@@ -38,6 +38,20 @@ class FollowModel {
         $stmt->bind_param("ii", $studentId, $clubId);
         $stmt->execute();
     }
-
+    public function isFollowing($studentId, $clubId) {
+        $stmt = $this->db->prepare(
+            'SELECT 1 FROM follow WHERE student_id = ? AND club_id = ?'
+        );
+        $stmt->bind_param("ii", $studentId, $clubId);
+        $stmt->execute();
+        return $stmt->get_result()->num_rows > 0;
+    }
+    public function unfollow($studentId, $clubId) {
+        $stmt = $this->db->prepare(
+            'DELETE FROM follow WHERE student_id = ? AND club_id = ?'
+        );
+        $stmt->bind_param("ii", $studentId, $clubId);
+        $stmt->execute();
+    }
 }
 ?>

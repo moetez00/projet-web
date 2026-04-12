@@ -34,5 +34,14 @@ class UserModel {
         $stmt->execute();
         return $stmt->get_result();
     }
+    public function searchUsers($query) {
+    $like = '%' . $query . '%';
+    $stmt = $this->db->prepare(
+        'SELECT id, username  FROM user WHERE username LIKE ?'
+    );
+    $stmt->bind_param("s", $like);
+    $stmt->execute();
+    return $stmt->get_result();
+}
 
 }

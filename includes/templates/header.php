@@ -1,3 +1,4 @@
+
 <?php
 include __DIR__ . '/../auth.php';
 checkAuth();
@@ -25,6 +26,7 @@ $sessionUser = $_SESSION['user'];
             <line x1="21" y1="21" x2="16.65" y2="16.65"/>
         </svg>
         <input type="text" placeholder="Search clubs, events…">
+
     </div>
 
     <div class="user-section">
@@ -39,3 +41,4 @@ $sessionUser = $_SESSION['user'];
         <a href="logout.php" class="logout-btn">Logout</a>
     </div>
 </nav>
+
