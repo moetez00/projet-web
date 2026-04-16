@@ -46,6 +46,7 @@ if ($_SESSION['user']['role'] !== 'student') {
 
     // les posts de ces clubs en premier
     $eventModel = new EventModel($connection);
+    $likeModel = new LikeModel($connection); 
     $posts = $eventModel->getFeedPosts($studentId);
     ?>
     <div class="container mt-4">
@@ -57,7 +58,17 @@ if ($_SESSION['user']['role'] !== 'student') {
                         <h5 class="mb-0">Upcoming Schedule</h5>
                     </div>
                     <div class="card-body">
-                        <p class="text-muted">No upcoming events.</p>
+                        <?php $liked = $likeModel->getLikedEvents($studentId); ?>
+                        <?php if ($liked->num_rows > 0): ?>
+                            <?php while ($ev = $liked->fetch_assoc()): ?>
+                                <div class="mb-2">
+                                    <strong><?php echo $ev['title']; ?></strong><br>
+                                    <small><?php echo date('d/m/Y', strtotime($ev['event_date'])); ?></small>
+                                </div>
+                            <?php endwhile; ?>
+                        <?php else: ?>
+                            <p class="text-muted">No liked events yet.</p>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -87,7 +98,12 @@ if ($_SESSION['user']['role'] !== 'student') {
                                             <?php echo $isFollowing ? 'Unfollow' : 'Follow'; ?>
                                         </button>
                                     </form>
-                                    <button class="btn btn-sm mt-2" style="background-color:#8F1402; color:white;">Like</button>
+                                    <form action="actions/do-like.php" method="POST">
+                                        <input type="hidden" name="event_id" value="<?php echo $post['id']; ?>">
+                                        <button type="submit" class="btn btn-sm mt-2" style="background-color:#8F1402; color:white;">
+                                            <?php echo $likeModel->hasLiked($studentId, $post['id']) ? '❤️ Unlike' : '🤍 Like'; ?>
+                                        </button>
+                                    </form>
                                     <!-- hnaaa abd bech yamel l like w tetzed lel scedule! -->
                                 </div>
                             </div>

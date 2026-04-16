@@ -7,3 +7,25 @@
  * Returns: JSON { liked: bool, count: int } for fetch() in like.js
  * Requires login with role='student'
  */
+
+session_start();
+require_once '../../includes/db.php';
+require_once '../../includes/autoloader.php';
+
+if (!isset($_SESSION['user']) || $_SESSION['user']['role'] !== 'student') {
+    header('Location: ../login.php');
+    exit();
+}
+
+$studentId = $_SESSION['user']['id'];
+$eventId = $_POST['event_id'];
+
+$likeModel = new LikeModel($connection);
+if ($likeModel->hasLiked($studentId, $eventId)) {
+    $likeModel->unlike($studentId, $eventId);
+} else {
+    $likeModel->like($studentId, $eventId);
+}
+
+header('Location: ../index.php');
+exit();

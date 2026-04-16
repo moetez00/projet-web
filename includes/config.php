@@ -19,7 +19,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
     $requiredVars = ['DB_HOST', 'DB_NAME', 'DB_USER', 'DB_PASS'];
     foreach ($requiredVars as $var) {
         $value = $_ENV[$var] ?? getenv($var);
-        if ($value === false || $value === null || $value === '') {
+        if ($value === false || $value === null) {
             die('Error: missing required environment variable ' . $var);
         }
     }
@@ -28,7 +28,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
     $dbport = (int)($_ENV['DB_PORT'] ?? getenv('DB_PORT') ?: 3306);
     $dbname = $_ENV['DB_NAME'] ?? getenv('DB_NAME');
     $username = $_ENV['DB_USER'] ?? getenv('DB_USER');
-    $password = $_ENV['DB_PASS'] ?? getenv('DB_PASS');
+    $password = $_ENV['DB_PASS'] ?? getenv('DB_PASS') ?? '';
 
 
 ?>
