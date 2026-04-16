@@ -71,15 +71,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 <body style="background: linear-gradient(135deg, #fde8e0 0%, #f9d5d3 40%, #f5c6c8 100%); min-height: 100vh;">
     <?php include __DIR__ . '/../includes/templates/header.php'; ?>
     <?php
-    $club_id = $_SESSION['user']['id'] ?? null;
+    $url_id=$_GET['id'] ?? null; //pour qu un etudiant peut visiter le profile d'un club
+    $session_id=$_SESSION['user']['id']??null;
+    $club_id = $url_id ?: $session_id;
+    if (!$club_id) {
+    header("Location: login.php");
+    exit();
+    }
+    $is_owner=($session_id==$club_id );
     $followModel=new FollowModel($connection);
     $clubModel = new ClubModel($connection);
     $club = $clubModel->findById($club_id);
-    $events = $clubModel->getEvents($club_id);
-    $followers=$followModel->getFollowingStudents($club_id);
     if (!$club) {
         die("Club introuvable.");
     }
+    $events = $clubModel->getEvents($club_id);
+    $followers=$followModel->getFollowingStudents($club_id);
     ?>
     <div class="page-body">
         <div class="row g-4">
@@ -107,10 +114,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                     <p class="club-bio"><?php echo htmlspecialchars($club['description'] ?? 'No bio available.'); ?></p>
 
                     <div class="sidebar-nav">
-
-                        <button class="nav-btn" data-panel="profile" onclick="switchPanel(this)">
-                            <i class="bi bi-person"></i> Profile
-                        </button>
+                        <?php if($is_owner): ?>
+                            <button class="nav-btn" data-panel="profile" onclick="switchPanel(this)">
+                                <i class="bi bi-person"></i> Profile
+                            </button>
+                        <?php endif; ?>
                         <button class="nav-btn active" data-panel="myposts" onclick="switchPanel(this)">
                             <i class="bi bi-pencil-square"></i> My posts
                         </button>
