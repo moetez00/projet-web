@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     header("Location: login.php");
     exit();
     }
-    $is_owner=($session_id==$club_id );
+    $is_owner=($session_id==$club_id);
     $followModel=new FollowModel($connection);
     $clubModel = new ClubModel($connection);
     $club = $clubModel->findById($club_id);
@@ -141,7 +141,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                                         <i class="bi bi-plus-lg me-1"></i> Add post
                                     </a>
                                 <?php endif; ?>
-                                <button class="btn-action"><i class="bi bi-bell"></i> Requests</button>
+                                <?php if($is_owner): ?>
+                                    <button class="btn-action"><i class="bi bi-bell"></i> Requests</button>
+                                <?php endif; ?>
                             </div>
                         </div>
 
