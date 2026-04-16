@@ -17,6 +17,10 @@ if (!isset($_SESSION['user'])) {
 }
 
 $student_id = $_SESSION['user']['id'];
+if(!$student_id){
+    header("Location:login.php");
+    exit();
+}
 $student_model = new StudentModel($connection);
 $follow_model = new FollowModel($connection);
 $like_model = new LikeModel($connection);
