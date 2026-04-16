@@ -16,7 +16,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
         $dotenv->safeLoad();
     }
 
-    $requiredVars = ['DB_HOST', 'DB_NAME', 'DB_USER', 'DB_PASS'];
+    $requiredVars = ['DB_HOST', 'DB_NAME', 'DB_USER'];
     foreach ($requiredVars as $var) {
         $value = $_ENV[$var] ?? getenv($var);
         if ($value === false || $value === null || $value === '') {

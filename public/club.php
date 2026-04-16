@@ -3,6 +3,7 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 require_once '../includes/db.php';
+require_once __DIR__ . '/../includes/models/FollowModel.php';
 require_once __DIR__ . '/../includes/models/ClubModel.php';
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -38,7 +39,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             move_uploaded_file($_FILES['cover_img']['tmp_name'], $uploadDir . $cover_img_name);
             $cover_img = $uploadDir . $cover_img_name;
         }
-
         $clubModel = new ClubModel($connection);
         if ($clubModel->editClub($club_id, $name, $description, $category, $cover_img, $profile_img)) {
             header("Location: club.php?success=1");
@@ -72,9 +72,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     <?php include __DIR__ . '/../includes/templates/header.php'; ?>
     <?php
     $club_id = $_SESSION['user']['id'] ?? null;
+    $followModel=new FollowModel($connection);
     $clubModel = new ClubModel($connection);
     $club = $clubModel->findById($club_id);
     $events = $clubModel->getEvents($club_id);
+    $followers=$followModel->getFollowingStudents($club_id);
     if (!$club) {
         die("Club introuvable.");
     }
@@ -93,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
                     <div class="stats-row">
                         <div class="stat-item">
-                            <div class="stat-num">11K</div>
+                            <div class="stat-num"><?php echo $followers->num_rows; ?></div>
                             <div class="stat-lbl">Followers</div>
                         </div>
                         <div class="stat-item">

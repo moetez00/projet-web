@@ -10,48 +10,55 @@
  *   unfollow($studentId, $clubId)
  *   isFollowing($studentId, $clubId)
  *   getFollowedClubs($studentId)
- */?>
-<?php
-class FollowModel {
-    private $db;
-
-    public function __construct($connection) {
-        $this->db = $connection;
+ */
+class FollowModel{
+    private $db; 
+    public function __construct($db){
+        $this->db=$db;
+    } 
+    public function follow($student_id,$club_id){
+    $query="insert into follow(student_id,club_id) values(?,?)";
+    $stmt=$this->db->prepare($query);
+    $stmt->bind_param("ii",$student_id,$club_id);
+    return $stmt->execute();
+   }
+   public function unfollow($student_id,$club_id){
+    $stmt=$this->db->prepare("delete from follow where student_id=? and club_id=?");
+    $stmt->bind_param("ii",$student_id,$club_id);
+    return $stmt->execute();
+   }
+   public function isFollowing($student_id,$club_id){
+    $stmt=$this->db->prepare("select * from follow where student_id=? and club_id=?");
+    $stmt->bind_param("ii",$student_id,$club_id);
+    $stmt->execute();
+    if ($stmt->get_result()->num_rows > 0) {
+        return true;
     }
-
-    /*public function getFollowedClubs($studentId) {
-        $stmt = $this->db->prepare(
-            'SELECT c.*, u.username, u.profile_img
-             FROM follow f
-             JOIN club c ON f.club_id = c.id
-             JOIN user u ON c.user_id = u.id
-             WHERE f.student_id = ?'
-        );
-        $stmt->bind_param("i", $studentId);
-        $stmt->execute();
-        return $stmt->get_result();
-    }*/
-    public function follow($studentId, $clubId) {
-        $stmt = $this->db->prepare(
-            'INSERT INTO follow (student_id, club_id) VALUES (?, ?)'
-        );
-        $stmt->bind_param("ii", $studentId, $clubId);
-        $stmt->execute();
+    else{
+        return false;
     }
-    public function isFollowing($studentId, $clubId) {
-        $stmt = $this->db->prepare(
-            'SELECT 1 FROM follow WHERE student_id = ? AND club_id = ?'
-        );
-        $stmt->bind_param("ii", $studentId, $clubId);
-        $stmt->execute();
-        return $stmt->get_result()->num_rows > 0;
-    }
-    public function unfollow($studentId, $clubId) {
-        $stmt = $this->db->prepare(
-            'DELETE FROM follow WHERE student_id = ? AND club_id = ?'
-        );
-        $stmt->bind_param("ii", $studentId, $clubId);
-        $stmt->execute();
-    }
+   }
+public function getFollowedClubs($student_id) {
+    $sql = "SELECT c.* FROM club c 
+            JOIN follow f ON c.user_id = f.club_id 
+            WHERE f.student_id = ?";
+            
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("i", $student_id);
+    $stmt->execute();
+    return $stmt->get_result();
 }
-?>
+   public function getFollowingStudents($club_id) {
+    $sql = "SELECT s.* FROM student s 
+            JOIN `follow` f ON s.user_id = f.student_id 
+            WHERE f.club_id = ?";
+            
+    $stmt = $this->db->prepare($sql);
+    $stmt->bind_param("i", $club_id);
+    
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    return $result; 
+}
+}
