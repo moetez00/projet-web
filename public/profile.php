@@ -5,12 +5,12 @@ error_reporting(E_ALL);
 require "../includes/db.php";
 require_once __DIR__ . '/../includes/models/FollowModel.php';
 require_once __DIR__ . '/../includes/models/StudentModel.php';
+require_once __DIR__ . '/../includes/models/LikeModel.php';
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Sécurité : Redirection si non connecté
 if (!isset($_SESSION['user'])) {
     header("Location: login.php");
     exit();
@@ -19,15 +19,16 @@ if (!isset($_SESSION['user'])) {
 $student_id = $_SESSION['user']['id'];
 $student_model = new StudentModel($connection);
 $follow_model = new FollowModel($connection);
+$like_model = new LikeModel($connection);
 
 // --- TRAITEMENT DU FORMULAIRE (POST) ---
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['action']) && $_POST['action'] === 'update_profile') {
     $name = $_POST['name'];
     $birthday = $_POST['birthday'];
     $major = $_POST['major'];
-    
+
     $current_data = $student_model->findById($student_id);
-    $profile_img = $current_data['profile_img']; 
+    $profile_img = $current_data['profile_img'];
 
     if (isset($_FILES['profile_img']) && $_FILES['profile_img']['error'] === UPLOAD_ERR_OK) {
         $uploadDir = "uploads/user/profile_img/";
@@ -36,8 +37,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['action']) && $_POST['
         }
         $ext = pathinfo($_FILES['profile_img']['name'], PATHINFO_EXTENSION);
         $profile_img_name = $student_id . "." . $ext;
-        
-        if(move_uploaded_file($_FILES['profile_img']['tmp_name'], $uploadDir . $profile_img_name)) {
+
+        if (move_uploaded_file($_FILES['profile_img']['tmp_name'], $uploadDir . $profile_img_name)) {
             $profile_img = $uploadDir . $profile_img_name;
         }
     }
@@ -57,7 +58,8 @@ if (!$student) {
     die("Erreur : Profil étudiant introuvable.");
 }
 
-$followedClubs = $follow_model->getFollowedClubs($student_id);
+$followedClubs  = $follow_model->getFollowedClubs($student_id);
+$likedEvents    = $like_model->getLikedEvents($student_id);
 ?>
 
 <!DOCTYPE html>
@@ -92,7 +94,8 @@ $followedClubs = $follow_model->getFollowedClubs($student_id);
                             <div class="stat-lbl">Following</div>
                         </div>
                         <div class="stat-item">
-                            <div class="stat-num">0</div> <div class="stat-lbl">Likes</div>
+                            <div class="stat-num"><?= $likedEvents ? $likedEvents->num_rows : 0; ?></div>
+                            <div class="stat-lbl">Likes</div>
                         </div>
                     </div>
 
@@ -117,7 +120,8 @@ $followedClubs = $follow_model->getFollowedClubs($student_id);
 
             <div class="col-12 col-md-8 col-lg-9">
                 <div class="content-card">
-                    
+
+                    <!-- PANEL: Paramètres -->
                     <div id="panel-profile">
                         <div class="d-flex align-items-center gap-3 mb-4">
                             <div style="background: #fbeaea; padding: 10px; border-radius: 12px;">
@@ -136,8 +140,8 @@ $followedClubs = $follow_model->getFollowedClubs($student_id);
                         <form action="profile.php" method="POST" enctype="multipart/form-data">
                             <input type="hidden" name="action" value="update_profile">
                             <div class="text-center mb-4">
-                                <img src="<?= $student['profile_img'] ?: 'https://placehold.co/120x120?text=Profile'; ?>" 
-                                     class="rounded-circle mb-3 shadow-sm" 
+                                <img src="<?= $student['profile_img'] ?: 'https://placehold.co/120x120?text=Profile'; ?>"
+                                     class="rounded-circle mb-3 shadow-sm"
                                      style="width: 120px; height: 120px; object-fit: cover; border: 3px solid #8B0000;">
                                 <div class="mb-3">
                                     <input type="file" name="profile_img" id="profile_img" class="form-control form-control-sm" accept="image/*">
@@ -164,6 +168,7 @@ $followedClubs = $follow_model->getFollowedClubs($student_id);
                         </form>
                     </div>
 
+                    <!-- PANEL: Clubs suivis -->
                     <div id="panel-followed-clubs" class="d-none">
                         <h2 style="font-weight: 800; color: #1a1a1a; font-size: 1.4rem;" class="mb-4">Clubs que je suis</h2>
                         <div class="row g-3">
@@ -185,26 +190,47 @@ $followedClubs = $follow_model->getFollowedClubs($student_id);
                         </div>
                     </div>
 
+                    <!-- PANEL: Événements likés -->
                     <div id="panel-liked-events" class="d-none">
                         <h2 style="font-weight: 800; color: #1a1a1a; font-size: 1.4rem;" class="mb-4">Événements que j'aime</h2>
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <div class="card p-3 border-0 shadow-sm rounded-4">
-                                    <div class="d-flex align-items-start gap-3">
-                                        <div style="width: 60px; height: 60px; background: #f8f9fa; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-                                            <i class="bi bi-calendar-check" style="font-size: 1.5rem; color: #8B0000;"></i>
-                                        </div>
-                                        <div class="flex-grow-1">
-                                            <h6 class="mb-1 fw-bold">Titre de l'événement</h6>
-                                            <p class="small text-muted mb-2">Club Organisateur</p>
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <span class="badge bg-light text-dark">Date</span>
-                                                <button class="btn btn-sm btn-link text-danger p-0"><i class="bi bi-heart-fill"></i> Unlike</button>
+                        <div class="row g-3" id="liked-events-container">
+                            <?php if ($likedEvents && $likedEvents->num_rows > 0): ?>
+                                <?php while($ev = $likedEvents->fetch_assoc()): ?>
+                                    <div class="col-md-6" id="liked-event-<?= $ev['id']; ?>">
+                                        <div class="card p-3 border-0 shadow-sm rounded-4">
+                                            <div class="d-flex align-items-start gap-3">
+                                                <div style="width: 60px; height: 60px; background: #f8f9fa; border-radius: 12px; display: flex; align-items: center; justify-content: center; overflow:hidden;">
+                                                    <?php if ($ev['image']): ?>
+                                                        <img src="<?= htmlspecialchars($ev['image']); ?>" style="width:100%;height:100%;object-fit:cover;">
+                                                    <?php else: ?>
+                                                        <i class="bi bi-calendar-check" style="font-size: 1.5rem; color: #8B0000;"></i>
+                                                    <?php endif; ?>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="mb-1 fw-bold"><?= htmlspecialchars($ev['title']); ?></h6>
+                                                    <p class="small text-muted mb-2"><?= htmlspecialchars($ev['club_name']); ?></p>
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <span class="badge bg-light text-dark">
+                                                            <?= date('d/m/Y', strtotime($ev['event_date'])); ?>
+                                                        </span>
+                                                        <form action="actions/do-like.php" method="POST" class="unlike-form" data-id="<?= $ev['id']; ?>">
+                                                            <input type="hidden" name="event_id" value="<?= $ev['id']; ?>">
+                                                            <button type="submit" class="btn btn-sm btn-link text-danger p-0">
+                                                                <i class="bi bi-heart-fill"></i> Unlike
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                <?php endwhile; ?>
+                            <?php else: ?>
+                                <div class="blank-panel" id="no-liked-msg">
+                                    <i class="bi bi-heart"></i>
+                                    <span>Vous n'avez liké aucun événement.</span>
                                 </div>
-                            </div>
+                            <?php endif; ?>
                         </div>
                     </div>
 
@@ -216,19 +242,45 @@ $followedClubs = $follow_model->getFollowedClubs($student_id);
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function switchPanel(btn) {
-            // Activer le bouton cliqué
             document.querySelectorAll('.sidebar-nav .nav-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
 
-            // Cacher tous les panels
             document.getElementById('panel-profile').classList.add('d-none');
             document.getElementById('panel-followed-clubs').classList.add('d-none');
-            document.getElementById('panel-liked-events').classList.add('d-none'); 
+            document.getElementById('panel-liked-events').classList.add('d-none');
 
-            // Afficher celui sélectionné
             const panelId = 'panel-' + btn.dataset.panel;
             document.getElementById(panelId).classList.remove('d-none');
         }
+    </script>
+    <script>
+        document.addEventListener('submit', function(e) {
+            const form = e.target.closest('.unlike-form');
+            if (!form) return;
+            e.preventDefault();
+
+            const eventId = form.dataset.id;
+            const formData = new FormData(form);
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                redirect: 'manual'
+            }).then(() => {
+                const card = document.getElementById('liked-event-' + eventId);
+                if (card) card.remove();
+
+                const container = document.getElementById('liked-events-container');
+                const remaining = container.querySelectorAll('[id^="liked-event-"]');
+                if (remaining.length === 0) {
+                    container.innerHTML = `
+                        <div class="blank-panel" id="no-liked-msg">
+                            <i class="bi bi-heart"></i>
+                            <span>Vous n'avez liké aucun événement.</span>
+                        </div>`;
+                }
+            });
+        });
     </script>
 </body>
 </html>

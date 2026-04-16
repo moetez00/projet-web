@@ -39,8 +39,9 @@ class FollowModel{
     }
    }
 public function getFollowedClubs($student_id) {
-    $sql = "SELECT c.* FROM club c 
-            JOIN follow f ON c.user_id = f.club_id 
+    $sql = "SELECT c.*,u.profile_img as profile_img FROM club c 
+            JOIN follow f ON c.user_id = f.club_id
+            join user u on(c.user_id=u.id) 
             WHERE f.student_id = ?";
             
     $stmt = $this->db->prepare($sql);
