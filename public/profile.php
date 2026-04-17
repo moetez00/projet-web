@@ -110,13 +110,13 @@ $likedEvents    = $like_model->getLikedEvents($student_id);
 
                     <div class="sidebar-nav">
                         <button class="nav-btn active" data-panel="profile" onclick="switchPanel(this)">
-                            <i class="bi bi-person-gear"></i> Paramètres
+                            <i class="bi bi-person-gear"></i> My profile
                         </button>
                         <button class="nav-btn" data-panel="followed-clubs" onclick="switchPanel(this)">
-                            <i class="bi bi-people"></i> Clubs suivis
+                            <i class="bi bi-people"></i> Followed Clubs
                         </button>
                         <button class="nav-btn" data-panel="liked-events" onclick="switchPanel(this)">
-                            <i class="bi bi-heart"></i> Événements likés
+                            <i class="bi bi-heart"></i> Liked Events
                         </button>
                     </div>
                 </div>
@@ -136,7 +136,7 @@ $likedEvents    = $like_model->getLikedEvents($student_id);
 
                         <?php if (isset($_GET['success'])): ?>
                             <div class="alert alert-success alert-dismissible fade show rounded-3" role="alert">
-                                <i class="bi bi-check-circle me-2"></i> Profil mis à jour !
+                                <i class="bi bi-check-circle me-2"></i> profile updated !
                                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                             </div>
                         <?php endif; ?>
@@ -154,27 +154,27 @@ $likedEvents    = $like_model->getLikedEvents($student_id);
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">Nom Complet</label>
+                                    <label class="form-label">Full Name</label>
                                     <input type="text" name="name" class="form-control" value="<?= htmlspecialchars($student['fullname']); ?>" required>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">Filière</label>
+                                    <label class="form-label">Major</label>
                                     <input type="text" name="major" class="form-control" value="<?= htmlspecialchars($student['major'] ?? ''); ?>">
                                 </div>
                                 <div class="col-md-12 mb-3">
-                                    <label class="form-label">Date de naissance</label>
+                                    <label class="form-label">Birthday</label>
                                     <input type="date" name="birthday" class="form-control" value="<?= $student['birthday'] ? date('Y-m-d', strtotime($student['birthday'])) : ''; ?>">
                                 </div>
                             </div>
                             <div class="d-grid mt-4">
-                                <button type="submit" class="btn-maroon">Enregistrer les modifications</button>
+                                <button type="submit" class="btn-maroon">Save Changes</button>
                             </div>
                         </form>
                     </div>
 
                     <!-- PANEL: Clubs suivis -->
                     <div id="panel-followed-clubs" class="d-none">
-                        <h2 style="font-weight: 800; color: #1a1a1a; font-size: 1.4rem;" class="mb-4">Clubs que je suis</h2>
+                        <h2 style="font-weight: 800; color: #1a1a1a; font-size: 1.4rem;" class="mb-4">Clubs i'm following</h2>
                         <div class="row g-3">
                             <?php if ($followedClubs && $followedClubs->num_rows > 0): ?>
                                 <?php while($c = $followedClubs->fetch_assoc()): ?>
@@ -189,14 +189,14 @@ $likedEvents    = $like_model->getLikedEvents($student_id);
                                     </div>
                                 <?php endwhile; ?>
                             <?php else: ?>
-                                <div class="blank-panel"><i class="bi bi-people"></i><span>Vous ne suivez aucun club.</span></div>
+                                <div class="blank-panel"><i class="bi bi-people"></i><span>No followed club</span></div>
                             <?php endif; ?>
                         </div>
                     </div>
 
                     <!-- PANEL: Événements likés -->
                     <div id="panel-liked-events" class="d-none">
-                        <h2 style="font-weight: 800; color: #1a1a1a; font-size: 1.4rem;" class="mb-4">Événements que j'aime</h2>
+                        <h2 style="font-weight: 800; color: #1a1a1a; font-size: 1.4rem;" class="mb-4">Events I Liked</h2>
                         <div class="row g-3" id="liked-events-container">
                             <?php if ($likedEvents && $likedEvents->num_rows > 0): ?>
                                 <?php while($ev = $likedEvents->fetch_assoc()): ?>
@@ -232,7 +232,7 @@ $likedEvents    = $like_model->getLikedEvents($student_id);
                             <?php else: ?>
                                 <div class="blank-panel" id="no-liked-msg">
                                     <i class="bi bi-heart"></i>
-                                    <span>Vous n'avez liké aucun événement.</span>
+                                    <span>No Liked Events</span>
                                 </div>
                             <?php endif; ?>
                         </div>
