@@ -257,34 +257,5 @@ $likedEvents    = $like_model->getLikedEvents($student_id);
             document.getElementById(panelId).classList.remove('d-none');
         }
     </script>
-    <script>
-        document.addEventListener('submit', function(e) {
-            const form = e.target.closest('.unlike-form');
-            if (!form) return;
-            e.preventDefault();
-
-            const eventId = form.dataset.id;
-            const formData = new FormData(form);
-
-            fetch(form.action, {
-                method: 'POST',
-                body: formData,
-                redirect: 'manual'
-            }).then(() => {
-                const card = document.getElementById('liked-event-' + eventId);
-                if (card) card.remove();
-
-                const container = document.getElementById('liked-events-container');
-                const remaining = container.querySelectorAll('[id^="liked-event-"]');
-                if (remaining.length === 0) {
-                    container.innerHTML = `
-                        <div class="blank-panel" id="no-liked-msg">
-                            <i class="bi bi-heart"></i>
-                            <span>Vous n'avez liké aucun événement.</span>
-                        </div>`;
-                }
-            });
-        });
-    </script>
 </body>
 </html>
